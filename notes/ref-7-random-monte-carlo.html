@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Random Number Generators and Monte Carlo Method - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Random Number Generators and Monte Carlo Method - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="random-number-generators-and-monte-carlo-method">Random Number Generators and Monte Carlo Method</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning objectives</h2>
+
+<ul>
+  <li>Understand the properties of random number generators and what properties are desirable in a random number generator</li>
+  <li>Give examples of problems where you would use Monte Carlo</li>
+  <li>Characterize the error of Monte Carlo</li>
+</ul>
+
+<h2 id="random-number-generators">Random Number Generators</h2>
+
+<p><strong><em>Random Number Generators (RNG)</em></strong> are algorithms or methods that can be used to generate a sequence of numbers that cannot be reasonably predicted. There are usually two principal methods for generating random numbers: <strong><em>truly-random method</em></strong> and <strong><em>pseudorandom method</em></strong>. Truly-random methods generate numbers according to some random physical phenomenon. For instance, rolling a fair die will generate truly random numbers between 1 and 6. Other example sources include atmospheric noise and thermal noise. Pseudorandom methods generate numbers using computational algorithms that produce sequences of apparently random results, which are in fact predictable and reproducible.</p>
+
+<p>When using a pseudorandom method, because only finite number of numbers can be represented in computer, any generated sequence must eventually repeat. The <strong><em>period</em></strong> of a pseudorandom number generator is defined as the maximum length of the repetition-free prefix of the sequence.</p>
+
+<h3 id="properties-of-random-number-generators">Properties of Random Number Generators</h3>
+
+<p>A random number generator has the following properties:</p>
+
+<ul>
+  <li>Random pattern: passes statistical tests of randomness</li>
+  <li>Long period: goes as long as possible before repeating</li>
+  <li>Efficiency: executes rapidly and requires little storage</li>
+  <li>Repeatability: produces same sequence if started with same initial conditions</li>
+  <li>Portability: runs on different kinds of computers and is capable of producing same sequence on each</li>
+</ul>
+
+<h3 id="linear-congruential-generator">Linear Congruential Generator</h3>
+
+<p>A <strong><em>linear congruential generator</em></strong> (LCG) is pseudorandom number generator of the form:</p>
+
+<div>\[ x_k = (a x_{k-1} + c) \quad \text{mod} \quad M \]</div>
+
+<p>where <span>\(a\)</span> and <span>\(c\)</span> are given integers and <span>\(x_0\)</span> is called the <strong><em>seed</em></strong>. The period of an LCG cannot exceed <span>\(M\)</span>. The quality depends on both <span>\(a\)</span> and <span>\(c\)</span>, and the period may be less than <span>\(M\)</span> depending on the values of <span>\(a\)</span> and <span>\(c\)</span>.</p>
+
+<h3 id="example-of-an-lcg">Example of an LCG</h3>
+
+<p>Below is the python code for an LCG that generates the numbers \(1,3,7,5,1,3,7,5,\dots\) given an initial seed of <span>\(1\)</span>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lcg_gen_next</span><span class="p">(</span><span class="n">modulus</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">xk</span><span class="p">):</span>
+  <span class="n">xk_p1</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">xk</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulus</span>
+  <span class="k">return</span> <span class="n">xk_p1</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="n">lcg_gen_next</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="monte-carlo">Monte Carlo</h2>
+
+<p><strong><em>Monte Carlo methods</em></strong> are algorithms that rely on repeated random sampling to approximate a desired quantity. Monte Carlo methods are typically used in modeling the following types of problems:</p>
+
+<ul>
+  <li>Nondeterministic processes</li>
+  <li>Complicated deterministic systems and deterministic problems with high dimensionality (e.g., Monte Carlo integration)</li>
+</ul>
+
+<h3 id="convergenceerror">Convergence/Error</h3>
+
+<p>Consider using Monte Carlo to estimate an integral \(I = \int_a^b f(x) dx\). Let <span>\(X\)</span> be a uniformly distributed random variable on <span>\([a, b]\)</span>. Then, \(I = (b-a) \mathbb{E}[f(X)]\). Using Monte Carlo with <span>\(n\)</span> samples, our estimate of the expected value is:</p>
+
+<div>\[S_n = \frac{1}{n} \sum_i^n f(X_i)\]</div>
+
+<p>so the approximate value for the integral is:</p>
+<div>\[ I_n = (b-a) \frac{1}{n} \sum_i^n f(X_i) \]</div>
+
+<p>By the law of large numbers, as \(n \to \infty\), the sample average <span>\(S_n\)</span> will converge to the expected value \(\mathbb{E}[f(X)]\). So, as \(n \to \infty\), \(I_n \to \int_a^b f(x) dx\).</p>
+
+<p>According to central limit theorem, as \(n \to \infty\),</p>
+<div>\[ \sqrt{n} (S_n - \mu) \to N(0, \sigma^2) \]</div>
+<p>where \(N(0, \sigma^2)\) is a normal distribution; \(\mu = \mathbb{E}[f(X)]\) and \(\sigma^2 = Var[X]\).</p>
+
+<p>Let <span>\(Z\)</span> be a random variable with normal distribution \(N(0, \sigma^2)\), then the error of Monte Carlo estimate, \(err = S_n - \mu\), can be written as</p>
+<div>\[ err \to \frac{1}{\sqrt{n}} Z \]</div>
+<p>when \(n \to \infty\).</p>
+
+<p>Therefore, the asymptotic behavior of the Monte Carlo method is \(\mathcal{O}(\frac{1}{\sqrt{n}})\), where <span>\(n\)</span> is the number of samples.</p>
+
+<h3 id="example-applying-monte-carlo">Example: Applying Monte Carlo</h3>
+
+<p>One of the most common applications of Monte Carlo is to approximate the definite integral of a complicated function, often in higher dimensions where other numerical integration techniques are extremely costly. Below is the python code for approximating the intergral of a function <span>\(f(x,y)\)</span> over the domain \([x_{min}, x_{max}] \times [y_{min}, y_{max}]\):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># function definition goes here
+</span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+  <span class="c1"># return function value
+</span>
+<span class="c1"># set x_min, x_max, y_min and y_max for integral interval
+</span><span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="c1"># n is the number of points used in Monte Carlo integration
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+  <span class="n">total</span> <span class="o">+=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># estimated integral value
+</span><span class="n">est</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span> <span class="o">*</span> <span class="n">total</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">x_max</span><span class="o">-</span><span class="n">x_min</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y_max</span><span class="o">-</span><span class="n">y_min</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-7-random-monte-carlo.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2018-01-25 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: minor fixes throughout, adds review questions</li>
+  <li>2018-01-25 Yu Meng <a href="mailto:yumeng5@illinois.edu">yumeng5@illinois.edu</a>: first complete draft</li>
+  <li>2018-01-17 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

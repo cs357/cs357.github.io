@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Optimization - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Optimization - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="optimization">Optimization</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning objectives</h2>
+
+<ul>
+  <li>Set up a problem as an <em>optimization</em> problem</li>
+  <li>Use a method to find an approximation of the minimum</li>
+  <li>Identify challenges in optimization</li>
+</ul>
+
+<h2 id="minima-of-a-function">Minima of a function</h2>
+
+<p>Consider a function \(f:\;S\to \mathbb{R}\), and \(S\subset\mathbb{R}^n\). The
+point \(\boldsymbol{x}^*\in S\) is called the <em>minimizer</em> or <em>minimum</em> of
+\(f\) if \(f(\boldsymbol{x}^*)\leq f(\boldsymbol{x}) \, \forall
+x\in S\).</p>
+
+<p>For the rest of this topic we try to find the <em>minimizer</em> of a function, as one
+can easily find the <em>maximizer</em> of a function \(f\) by trying to find the <em>minimizer</em>
+of \(-f\).</p>
+
+<h2 id="local-vs-global-minima">Local vs. Global Minima</h2>
+
+<p>Consider a domain \(S\subset\mathbb{R}^n\), and \(f:S\to\mathbb{R}\).</p>
+
+<ul>
+  <li>
+    <p><strong>Local Minima</strong>: \(\boldsymbol{x}^*\) is a <em>local minimum</em> if \(f(\boldsymbol{x}^*)\leq
+  f(\boldsymbol{x})\) for all feasible \(\boldsymbol{x}\) in some neighborhood of \(\boldsymbol{x}^*\).</p>
+  </li>
+  <li>
+    <p><strong>Global Minima</strong>: \(\boldsymbol{x}^*\) is a <em>global minimum</em> if \(f(\boldsymbol{x}^*)\leq
+  f(\boldsymbol{x})\) for all \(\boldsymbol{x}\in S\).</p>
+  </li>
+</ul>
+
+<p>Note that it is easier to find the local
+minimum than the global minimum. Given a function, finding whether a global
+minimum exists over the domain is in itself a non-trivial problem. Hence, we
+will limit ourselves to finding the local minima of the function.</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/globalvslocal.png" width="400" /> </div>
+
+<h2 id="criteria-for-1-d-local-minima">Criteria for 1-D Local Minima</h2>
+
+<p>In the case of 1-D optimization, we can tell if a point \(x^* \in S\) is
+a local minimum by considering the values of the derivatives. Specifically,</p>
+
+<ol>
+  <li>(First-order) Necessary condition:  \(f'(x^*) = 0\)</li>
+  <li>(Second-order) Sufficient condition: \(f'(x^*) = 0\) and \(f''(x^*) &gt; 0\).</li>
+</ol>
+
+<p><strong>Example:</strong>
+Consider the function
+\(f(x) = x^3 - 6x^2 + 9x -6\)
+The first and second derivatives are as follows:
+\(f'(x) = 3x^2-12x+9\\
+f''(x) = 6x-12\)</p>
+
+<p>The critical points are tabulated as:</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"><span class="math inline">\({x}\)</span></th>
+      <th scope="col"><span class="math inline">\({f'(x)}\)</span></th>
+      <th scope="col"><span class="math inline">\({f''(x)}\)</span></th>
+      <th scope="col">Characteristic</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr class="odd">
+  <td>3</td>
+  <td>0</td>
+  <td><span class="math inline">\(6\)</span></td>
+  <td>Local Minimum</td>
+  </tr>
+  <tr class="even">
+  <td>1</td>
+  <td>0</td>
+  <td><span class="math inline">\(-6\)</span></td>
+  <td>Local Maximum</td>
+  </tr>
+  </tbody>
+</table>
+
+<p>Looking at the table, we see that \(x=3\) satisfies the sufficient condition for
+being a local minimum.</p>
+
+<h2 id="criteria-for-n-d-local-minima">Criteria for N-D Local Minima</h2>
+
+<p>As we saw in 1-D, on extending that concept to \(n\) dimensions we can tell if
+\(\boldsymbol{x}^*\) is a local minimum by the following conditions:</p>
+
+<ol>
+  <li>Necessary condition:
+the gradient \(\nabla f(\boldsymbol{x}^*) = \boldsymbol{0}\)</li>
+  <li>Sufficient condition:
+the gradient \(\nabla f(\boldsymbol{x}^*) = \boldsymbol{0}\)
+and the Hessian matrix \(H_f(\boldsymbol{x^*})\) is positive definite.</li>
+</ol>
+
+<h2 id="definiton-of-gradient-and-hessian-matrix">Definiton of Gradient and Hessian Matrix</h2>
+
+<p>Given  \(f:\mathbb{R}^n\to \mathbb{R}\) we define the gradient function \(\nabla
+f: \mathbb{R}^n\to\mathbb{R}^n\) as:</p>
+
+\[\nabla f(\boldsymbol{x}) =
+\begin{pmatrix} \frac{\partial f}{\partial x_1}\\ \frac{\partial f}{\partial
+x_2}\\ \vdots\\ \frac{\partial f}{\partial x_n} \end{pmatrix}\]
+
+<p>Given  \(f:\mathbb{R}^n\to \mathbb{R}\) we define the Hessian matrix \({\bf H}_f:
+\mathbb{R}^n\to\mathbb{R}^{n\times n}\) as:</p>
+
+\[{\bf H}_f(\boldsymbol{x}) = \begin{bmatrix}
+\frac{\partial^2 f}{\partial x_1^2}           &amp; \frac{\partial^2 f}{\partial x_1\partial x_2} &amp; \ldots &amp; \frac{\partial^2 f}{\partial x_1\partial x_n} \\
+\frac{\partial^2 f}{\partial x_2\partial x_1} &amp; \frac{\partial^2 f}{\partial x_2^2}           &amp; \ldots &amp; \frac{\partial^2 f}{\partial x_2\partial x_n} \\
+\vdots                                        &amp; \vdots                                      &amp; \ddots &amp; \vdots \\
+\frac{\partial^2 f}{\partial x_n\partial x_1} &amp; \frac{\partial^2 f}{\partial x_n\partial x_2} &amp; \ldots &amp; \frac{\partial^2 f}{\partial x_n^2}
+\end{bmatrix}\]
+
+<h2 id="unimodal">Unimodal</h2>
+
+<p>A function is unimodal on an interval \([a,b]\) means this function has a unique global minimum on that interval \([a,b]\)</p>
+
+<p>A 1-dimensional function \(f: S\to\mathbb{R}\), is said to be unimodal if
+for all \(x_1, x_2 \in S\), with \(x_1&lt;x_2\) and \(x^*\) as the
+minimizer:</p>
+
+<ul>
+  <li>If \(x_2 &lt; x^*\Rightarrow f(x_1)&gt;f(x_2)\)</li>
+  <li>If \(x^* &lt; x_1\Rightarrow f(x_1)&lt;f(x_2)\)</li>
+</ul>
+
+<p>Some examples of unimodal functions on an interval:</p>
+
+<ol>
+  <li>
+    <p>\(f(x) = x^2\) is unimodal on the interval \([-1,1]\)</p>
+  </li>
+  <li>
+    <p>\(f(x) = \begin{cases} x, \text{ for } x \geq 0, \\ 0, \text{ for } x &lt; 0 \end{cases}\) is not unimodal on \([-1,1]\) because the global minimum is not unique. This is an example of a convex function that is not unimodal.</p>
+  </li>
+  <li>
+    <p>\(f(x) = \begin{cases} x, \text{ for } x &gt; 0, \\ -100, \text{ for } x = 0,\\ 0 \text{ for } x &lt; 0\end{cases}\) is not unimodal on \([-1,1]\).  It has a unique minimum at \(x=0\) but does not steadily decrease(i.e., monotonically decrease) as you move 
+from \(-1\) to \(0\).</p>
+  </li>
+  <li>
+    <p>\(f(x) = cos(x)\) is not unimodal on the interval \([-\pi/2, 2\pi]\) because it increases on \([-\pi/2, 0]\).</p>
+  </li>
+</ol>
+
+<p>In order to simplify, we will consider our objective function to be <em>unimodal</em>
+as it guarantees us a unique solution to the minimization problem.</p>
+
+<h2 id="optimization-techniques-in-1-d">Optimization Techniques in 1-D</h2>
+
+<h3 id="newtons-method">Newton’s Method</h3>
+<p>We know that in order to find a local minimum we need to find the root of the
+derivative of the function. Inspired from Newton’s method for <em>root-finding</em> we
+define our iterative scheme as follows:
+\(x_{k+1} = x_k - \frac{f'(x_k)}{f''(x_k)}\)
+This is equivalent to using Newton’s method for root finding to solve
+\(f'(x) = 0\), so the method converges quadratically, provided that \(x_k\) is
+sufficiently close to the local minimum.</p>
+
+<p>For Newton’s method for optimization
+in 1-D, we evaluate \(f'(x_k)\) and \(f''(x_k)\), so it requires 2 function
+evaluations per iteration.</p>
+
+<h3 id="golden-section-search">Golden Section Search</h3>
+<p>Inspired by bisection for root finding, we define an <em>interval reduction</em>
+method for finding the minimum of a function. As in bisection where we
+reduce the interval such that the reduced interval always contains the root, in
+<em>Golden Section Search</em> we reduce our interval such that it always has a
+unique minimizer in our domain.</p>
+
+<p><strong>Algorithm to find the minima of \(f: [a, b] \to \mathbb{R}\)</strong>:</p>
+
+<p>Our goal is to reduce the domain to \([x_1, x_2]\) such that:</p>
+
+<ol>
+  <li>If \(f(x_1) &gt; f(x_2)\) our new interval would be \((x_1, b)\)</li>
+  <li>If \(f(x_1) \leq f(x_2)\) our new interval would be \((a, x_2)\)</li>
+</ol>
+
+<p>We select \(x_1, x_2\) as interior points to \([x_1, x_2]\) by choosing a
+\(0\leq\tau\leq 1\) and setting:</p>
+
+\[x_1 = a + (1-\tau)(b-a)\]
+
+\[x_2 = a + \tau(b-a)\]
+
+<p>The challenging part is to select a \(\tau\) such that we ensure symmetry i.e.
+after each iteration we reduce the interval by the same factor, which gives us
+the indentity \(\tau^2 = 1-\tau\). Hence,</p>
+
+\[\tau = \frac{\sqrt{5}-1}{2}.\]
+
+<p>As the interval gets reduced by a fixed factor each time, it can be observed
+that the method is linearly convergent. The number \(\frac{\sqrt{5}-1}{2}\) is
+the inverse of the “Golden-Ratio” and hence this algorithm is named Golden Section
+Search.</p>
+
+<p>In golden section search, we do not need to evaluate any derivatives
+of \(f(x)\).  At each iteration we need \(f(x_1)\) and \(f(x_2)\), but one of \(x_1\)
+or \(x_2\) will be the same as the previous iteration, so it only requires
+1 additional function evaluation per iteration (after the first iteration).</p>
+
+<h2 id="optimization-in-n-dimensions">Optimization in N Dimensions</h2>
+
+<h3 id="steepest-descent">Steepest Descent</h3>
+
+<p>The negative of the gradient of a differentiable function \(f:
+\mathbb{R}^n\to\mathbb{R}\) points downhill i.e. towards points in the domain
+having lower values. This hints us to move in the direction of \(-\nabla
+f\) while searching for the minimum until we reach the point where \(\nabla
+f(\boldsymbol{x}) = \boldsymbol{0}\). Therefore, at a point \(\boldsymbol{x}\) the
+direction ‘’\(-\nabla f(\boldsymbol{x})\)’’ is called the direction of steepest descent.</p>
+
+<p>We know the direction we need to move to approach the minimum but we
+still do not know the distance we need to move in order to approach the
+minimum. If \(\boldsymbol{x_k}\) was our earlier point then we select the next
+guess by moving it in the direction of the negative gradient:</p>
+
+\[\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \alpha(-\nabla
+f(\boldsymbol{x_k})).\]
+
+<p>The next problem would be to find the \(\alpha\), and we use the 1-dimensional
+optimization algorithms to find the required \(\alpha\). Hence, the problem
+translates to:</p>
+
+\[\boldsymbol{s} = -\nabla f(\boldsymbol{x_k}) \\
+\min_{\alpha}\left( f\left(\boldsymbol{x_k} + \alpha \boldsymbol{s}\right)\right)\]
+
+<p>The steepest descent algorithm can be summed up in the following function:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="n">la</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="n">opt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">obj_func</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="c1"># code for computing the objective function at (x+alpha*s)
+</span>    <span class="k">return</span> <span class="n">f_of_x_plus_alpha_s</span>
+
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># code for computing gradient
+</span>    <span class="k">return</span> <span class="n">grad_x</span>
+
+<span class="k">def</span> <span class="nf">steepest_descent</span><span class="p">(</span><span class="n">x_init</span><span class="p">):</span>
+    <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_init</span>
+    <span class="n">x_prev</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">x_init</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">la</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_prev</span> <span class="o">-</span> <span class="n">x_new</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">):</span>
+        <span class="n">x_prev</span> <span class="o">=</span> <span class="n">x_new</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">x_prev</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="n">obj_func</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x_prev</span><span class="p">,</span> <span class="n">s</span><span class="p">)).</span><span class="n">x</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_prev</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="n">s</span>
+
+    <span class="k">return</span> <span class="n">x_new</span>
+</code></pre></div></div>
+<p>The <em>steepest descent</em> method converges <em>linearly</em>.</p>
+
+<h3 id="newtons-method-1">Newton’s Method</h3>
+
+<p>Newton’s Method in \(n\) dimensions is similar to Newton’s method for root
+finding in \(n\) dimensions, except we just replace the \(n\)-dimensional function
+by the gradient and the
+Jacobian matrix by the Hessian matrix. We can arrive at the result by
+considering the Taylor expansion of the function.</p>
+
+\[f(\boldsymbol{x}+s) \approx f(\boldsymbol{x}) + \nabla f(\boldsymbol{x})^Ts +
+\frac{1}{2}s^T {\bf H}_f(\boldsymbol{x})s\]
+
+<p>We solve for \(\nabla f(\boldsymbol{s}) = \boldsymbol{0}\) for \(\boldsymbol{s}\).
+Hence the equation can be translated as:</p>
+
+\[{\bf H}_f(\boldsymbol{x})\boldsymbol{s} =
+-\nabla f(\boldsymbol{x}).\]
+
+<p>The Newton’s Method can be expressed as a python function as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="k">def</span> <span class="nf">hessian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Computes the hessian matrix corresponding the given objective function
+</span>    <span class="k">return</span> <span class="n">hessian_matrix_at_x</span>
+
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Computes the gradient vector corresponding the given objective function
+</span>    <span class="k">return</span> <span class="n">gradient_vector_at_x</span>
+
+<span class="k">def</span> <span class="nf">newtons_method</span><span class="p">(</span><span class="n">x_init</span><span class="p">):</span>
+    <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_init</span>
+    <span class="n">x_prev</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">x_init</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">la</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_prev</span><span class="o">-</span><span class="n">x_new</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">1e-6</span><span class="p">):</span>
+        <span class="n">x_prev</span> <span class="o">=</span> <span class="n">x_new</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">la</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">hessian</span><span class="p">(</span><span class="n">x_prev</span><span class="p">),</span> <span class="n">gradient</span><span class="p">(</span><span class="n">x_prev</span><span class="p">))</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_prev</span> <span class="o">+</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">x_new</span>
+</code></pre></div></div>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-15-opt_nd.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2020-08-08 Jerry Yang <a href="mailto:jiayiy7@illinois.edu">jiayiy7@illinois.edu</a>: adds unimodal examples</li>
+  <li>2020-04-26 Mariana Silva <a href="mailto:mfsilva@illinois.edu">mfsilva@illinois.edu</a>: small text revision</li>
+  <li>2018-4-25 Adam Stewart <a href="mailto:adamjs5@illinois.edu">adamjs5@illinois.edu</a>: fixes missing parenthesis in <code class="language-plaintext highlighter-rouge">newtons_method</code></li>
+  <li>2017-11-25 Adam Stewart <a href="mailto:adamjs5@illinois.edu">adamjs5@illinois.edu</a>: fixes missing partial in Hessian matrix</li>
+  <li>2017-11-20 Kaushik Kulkarni <a href="mailto:kgk2@illinois.edu">kgk2@illinois.edu</a>: fixes table formatting</li>
+  <li>2017-11-20 Nate Bowman <a href="mailto:nlbowma2@illinois.edu">nlbowma2@illinois.edu</a>: adds review questions</li>
+  <li>2017-11-20 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: removes Gauss-Newton/LM,
+minor rewording and small changes throughout</li>
+  <li>2017-11-20 Kaushik Kulkarni <a href="mailto:kgk2@illinois.edu">kgk2@illinois.edu</a> and
+Arun Lakshmanan <a href="mailto:lakshma2@illinois.edu">lakshma2@illinois.edu</a>: first full draft</li>
+  <li>2017-10-17 Luke Olson <a href="mailto:lukeo@illinois.edu">lukeo@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

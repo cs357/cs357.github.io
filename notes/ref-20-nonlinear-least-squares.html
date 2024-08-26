@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Nonlinear Least Squares - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Nonlinear Least Squares - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="nonlinear-least-squares">Nonlinear Least Squares</h1>
+
+<h2 id="non-linear-least-squares-problem-vs-linear-least-squares-problem">Non-linear Least-squares Problem vs. Linear Least-squares Problem</h2>
+
+<p>The above linear least-squares problem is associated with an overdetermined linear system \(A {\bf x} \cong {\bf b}.\) This problem is called a linear one because the fitting function we are looking for is linear in the components of \({\bf x}\). For example, if we are looking for a polynomial fitting function</p>
+<div>\[ f(t,{\bf x}) = x_1 + x_2t + x_3t^2 + \dotsb + x_nt^{n-1} \]</div>
+<p>to fit the data points \({(t_i,y_i)|1 \le i \le m}\) (<span>\(m &gt; n\)</span>), the problem is still a linear least-squares problem, because \(f(t,{\bf x})\) is linear in the components of \({\bf x}\) (though \(f(t,{\bf x})\) is nonlinear in <span>\(t\)</span>).</p>
+
+<p>If the fitting function \(f(t,{\bf x})\) for data points \({(t_i,y_i)|1 \le i \le m}\) is nonlinear in the components of \({\bf x}\), then the problem is a non-linear least-squares problem. For example, fitting sum of exponentials</p>
+<div>\[ f(t,{\bf x}) = x_1 e^{x_2 t} + x_2 e^{x_3 t} + \dotsb + x_{n-1} e^{x_n t} \]</div>
+<p>is a <strong><em>non-linear least-squares problem</em></strong>.</p>
+
+<h2 id="non-linear-least-squares-problem-set-up">Non-linear Least-squares Problem Set Up</h2>
+
+<p>Given <span>\(m\)</span> data points, \({(t_1,y_1),(t_2,y_2),\dots,(t_m,y_m)}\), we want to find a curve \(f(t,{\bf x})\) that best fits the data points. Mathematically, we are finding \({\bf x}\) such that the squared Euclidean norm of the residual vector</p>
+<div>\[ \|{\bf r}({\bf x})\|_2^2 \]</div>
+<p>is minimized, where the components of the residual vector are</p>
+<div>\[ r_i({\bf x}) = y_i - f(t_i,{\bf x}). \]</div>
+
+<p>Equivalently, we want to minimize</p>
+<div>\[ \phi({\bf x}) = \frac{1}{2} {\bf r}^T({\bf x}){\bf r}({\bf x}). \]</div>
+
+<p>To solve this optimization problem, we can use steepest descent, see <a href="/cs357/fa2024">Reference Page: Optimization</a>. We compute the gradient vector</p>
+<div>\[ \nabla \phi({\bf x}) = J^T({\bf x}){\bf r}({\bf x}) ,\]</div>
+<p>where \(J({\bf x})\) is the Jacobian of \({\bf r}({\bf x})\).</p>
+
+<p>Then, we use steepest descent as usual with this gradient vector and our objective function, \(\phi({\bf x})\), iterating until we converge to a solution.</p>
+
+<h2 id="example-of-a-non-linear-least-squares-problem">Example of a Non-linear Least Squares Problem</h2>
+
+<p>Consider fitting <span>\(m\)</span> data points, \((t_0, y_0), (t_1, y_1), \dots, (t_{m-1}, y_{m-1})\), with the curve</p>
+<div>\[f(t, \mathbf{x}) = x_0 + x_1 e^{-x_2 t}.\]</div>
+
+<p>The components of the residual are given by:</p>
+<div>\[r_i(\mathbf{x}) = y_i - (x_0 + x_1 e^{-x_2 t_i}).\]</div>
+
+<p>The gradient of \(\phi(\mathbf{x})\) is given by:</p>
+<div>\[\begin{bmatrix} -1 &amp; -1 &amp; \dots &amp; -1 \\ -e^{-x_2 t_0} &amp; -e^{-x_2 t_1} &amp; \dots &amp; -e^{-x_2 t_{m-1}} \\ x_1 t_0 e^{-x_2 t_0} &amp; x_1 t_1 e^{-x_2 t_1} &amp; \dots &amp; x_1 t_{m-1} e^{-x_2 t_{m-1}} \end{bmatrix} \begin{bmatrix} y_0 - x_0 - x_1 e^{-x_2 t_0} \\ \vdots \\ y_{m-1} - x_0 - x_1 e^{-x_2 t_{m-1}} \end{bmatrix}. \]</div>
+
+<p>With steepest descent, we would use a line search along the direction of the negative gradient to find the overall step and use this to find the next iterate.</p>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ol>
+  <li>For a given model and given data, what is the residual vector for a nonlinear least squares problem?</li>
+  <li>How do we solve a nonlinear least squares problem? What do we minimize when solving a nonlinear least squares problem?</li>
+  <li>Consider solving a nonlinear least squares problem using gradient descent. For a given model, how do you compute the direction of the step?</li>
+</ol>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

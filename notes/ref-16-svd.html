@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Singular Value Decompositions - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Singular Value Decompositions - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="singular-value-decompositions">Singular Value Decompositions</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Construct an SVD of a matrix</li>
+  <li>Identify pieces of an SVD</li>
+  <li>Use an SVD to solve a problem</li>
+</ul>
+
+<h2 id="singular-value-decomposition">Singular Value Decomposition</h2>
+
+<p>An \(m \times n\) real matrix <span>\({\bf A}\)</span> has a singular value decomposition of the form</p>
+
+\[{\bf A} = {\bf U} {\bf \Sigma} {\bf V}^T\]
+
+<p>where \({\bf U}\) is an \(m \times m\) orthogonal matrix, \({\bf V}\) is an \(n \times n\) orthogonal matrix, and \({\bf \Sigma}\) is an \(m \times n\) diagonal matrix. Specifically,</p>
+
+<ul>
+  <li><span>\({\bf U}\)</span> is an \(m \times m\) orthogonal matrix whose columns are eigenvectors of \({\bf A} {\bf A}^T\). The columns of <span>\({\bf U}\)</span> are called the <em>left singular vectors</em> of <span>\({\bf A}\)</span>.</li>
+</ul>
+
+\[\mathbf{A}\mathbf{A}^T = ({\bf U} {\bf \Sigma} {\bf V}^T)({\bf U} {\bf \Sigma} {\bf V}^T)^T\]
+
+\[\hspace{2cm}= ({\bf U} {\bf \Sigma} {\bf V}^T) (({\bf V}^T)^T {\bf \Sigma}^T {\bf U}^T)\]
+
+\[\hspace{0.8cm}= {\bf U} {\bf \Sigma} ({\bf V}^T {\bf V}) {\bf \Sigma}^T {\bf U}^T\]
+
+\[({\bf V} \text{ is an orthogonal matrix}, {\bf V^T} = {\bf V^{-1}} \text{ and } {\bf V}^T {\bf V} = \mathbf{I})\]
+
+\[= {\bf U} ({\bf \Sigma} {\bf \Sigma}^T) {\bf U}^T\]
+
+<p>\({\bf U}\) is also an orthogonal matrix, we can apply diagonalization (\({\bf B} = \mathbf{X} \mathbf{D} \mathbf{X^{-1}}\)).</p>
+
+<p>We have the columns of \({\bf U}\) are the eigenvectors of \(\mathbf{A}\mathbf{A}^T\), with eigenvalues in the diagonal entries of \({\bf \Sigma} {\bf \Sigma}^T\).</p>
+
+<ul>
+  <li><span>\({\bf V}\)</span> is an \(n \times n\) orthogonal matrix whose columns are eigenvectors of \({\bf A}^T {\bf A}\). The columns of <span>\( {\bf V}\)</span> are called the <em>right singular vectors</em> of <span>\({\bf A}\)</span>.</li>
+</ul>
+
+\[\mathbf{A}^T\mathbf{A} = ({\bf U} {\bf \Sigma} {\bf V}^T)^T ({\bf U} {\bf \Sigma} {\bf V}^T)\]
+
+\[= {\bf V} ({\bf \Sigma}^T {\bf \Sigma}) {\bf V}^T\]
+
+<p>Similar to above, we have the columns of \({\bf V}\) as the eigenvectors of \(\mathbf{A}^T \mathbf{A}\), with eigenvalues in the diagonal entries of \({\bf \Sigma}^T {\bf \Sigma}\).</p>
+
+<ul>
+  <li>\({\bf \Sigma}\) is an \(m \times n\) diagonal matrix of the form:</li>
+</ul>
+
+\[\begin{eqnarray}
+{\bf \Sigma} = \begin{bmatrix} \sigma_1 &amp; &amp; \\ &amp; \ddots &amp; \\ &amp; &amp; \sigma_s \\ 0 &amp; &amp; 0 \\ \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; &amp; 0 \end{bmatrix} \text{when } m &gt; n, \; \text{and} \; {\bf \Sigma} = \begin{bmatrix} \sigma_1 &amp; &amp; &amp; 0 &amp; \dots &amp; 0 \\ &amp; \ddots &amp; &amp; &amp; \ddots &amp;\\ &amp; &amp; \sigma_s &amp; 0 &amp; \dots &amp; 0 \\ \end{bmatrix} \text{when} \, m &lt; n.
+\end{eqnarray}\]
+
+<p>where \(s = \min(m,n)\) and \(\sigma_1 \ge \sigma_2 \dots \ge \sigma_s \ge 0\) are the square roots of the eigenvalues values of \({\bf A}^T {\bf A}\). The diagonal entries are called the <em>singular</em> values of <span>\({\bf A}\)</span>.</p>
+
+<p>Note that if \(\mathbf{A}^T\mathbf{x} \ne 0\), then \(\mathbf{A}^T\mathbf{A}\) and \(\mathbf{A}\mathbf{A}^T\) both have the same eigenvalues:</p>
+
+\[\mathbf{A}\mathbf{A}^T\mathbf{x} = \lambda \mathbf{x}\]
+
+<p>\(\hspace{13cm}\)(left-multiply both sides by \(\mathbf{A}^T\))</p>
+
+\[\mathbf{A}^T\mathbf{A}\mathbf{A}^T\mathbf{x} = \mathbf{A}^T \lambda \mathbf{x}\]
+
+\[\mathbf{A}^T\mathbf{A}(\mathbf{A}^T\mathbf{x}) = \lambda (\mathbf{A}^T\mathbf{x})\]
+
+<!-- why is it that singular values must always be nonnegative? Is this due to convention? -->
+
+<h2 id="time-complexity">Time Complexity</h2>
+
+<p>The time-complexity for computing the SVD factorization of an arbitrary \(m \times n\) matrix is \(\alpha (m^2n + n^3)\), where the constant \(\alpha\) ranges from 4 to 10 (or more) depending on the algorithm.</p>
+
+<p>In general, we can define the cost as:</p>
+
+\[\mathcal{O}(m^2n + n^3)\]
+
+<h2 id="reduced-svd">Reduced SVD</h2>
+
+<p>The SVD factorization of a non-square matrix <span>\({\bf A}\)</span> of size \(m \times n\) can be represented in a reduced format:</p>
+
+<ul>
+  <li>For \(m \ge n\): <span>\({\bf U}\)</span> is \(m \times n\), \({\bf \Sigma}\) is \(n \times n\), and <span>\({\bf V}\)</span> is \(n \times n\)</li>
+  <li>For \(m \le n\): <span>\({\bf U}\)</span> is \(m \times m\), \({\bf \Sigma}\) is \(m \times m\), and <span>\({\bf V}\)</span> is \(n \times m\) (note if <span>\({\bf V}\)</span> is \(n \times m\), then \({\bf V}^T\) is \(m \times n\))</li>
+</ul>
+
+<p><br />
+The following figure depicts the reduced SVD factorization (in red) against the full SVD factorizations (in gray).</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/reduced_svd.svg" /> </div>
+
+<p>In general, we will represent the reduced SVD as:</p>
+
+\[{\bf A} = {\bf U}_R {\bf \Sigma}_R {\bf V}_R^T\]
+
+<p>where \({\bf U}_R\) is a \(m \times s\) matrix, \({\bf V}_R\) is a \(n \times s\) matrix,  \({\bf \Sigma}_R\) is a \(s \times s\) matrix, and \(s = \min(m,n)\).</p>
+
+<h2 id="example-computing-the-svd">Example: Computing the SVD</h2>
+
+<p>We begin with the following non-square matrix, <span>\({\bf A}\)</span></p>
+<div>\[ {\bf A} = \left[ \begin{array}{ccc} 3 &amp; 2 &amp; 3 \\ 8 &amp; 8 &amp; 2 \\ 8 &amp; 7 &amp; 4 \\ 1 &amp; 8 &amp; 7 \\ 6 &amp; 4 &amp; 7 \\ \end{array} \right] \]</div>
+
+<p>and we will compute the reduced form of the SVD (where here \(s = 3\)):</p>
+
+<p>(1) Compute \({\bf A}^T {\bf A}\):</p>
+
+\[{\bf A}^T {\bf A} = \left[ \begin{array}{ccc} 174 &amp; 158 &amp; 106 \\ 158 &amp; 197 &amp; 134 \\ 106 &amp; 134 &amp; 127 \\ \end{array} \right]\]
+
+<p>(2) Compute the eigenvectors and eigenvalues of \({\bf A}^T {\bf A}\):</p>
+
+\[\lambda_1 = 437.479, \quad \lambda_2 = 42.6444, \quad \lambda_3 = 17.8766, \\ \boldsymbol{v}_1 = \begin{bmatrix} 0.585051 \\ 0.652648 \\ 0.481418\end{bmatrix}, \quad \boldsymbol{v}_2 = \begin{bmatrix} -0.710399 \\ 0.126068 \\ 0.692415 \end{bmatrix}, \quad \boldsymbol{v}_3 = \begin{bmatrix} 0.391212 \\ -0.747098 \\ 0.537398 \end{bmatrix}\]
+
+<p>(3) Construct <span>\({\bf V}_R\)</span> from the eigenvectors of \({\bf A}^T {\bf A}\):</p>
+<div>\[ {\bf V}_R = \left[ \begin{array}{ccc} 0.585051 &amp; -0.710399 &amp; 0.391212 \\ 0.652648 &amp; 0.126068 &amp; -0.747098 \\ 0.481418 &amp; 0.692415 &amp; 0.537398 \\ \end{array} \right]. \]</div>
+
+<p>(4) Construct \({\bf \Sigma}_R\) from the square roots of the eigenvalues of \({\bf A}^T {\bf A}\):</p>
+<div>\[ {\bf \Sigma}_R = \begin{bmatrix} 20.916 &amp; 0 &amp; 0 \\ 0 &amp; 6.53207 &amp; 0 \\ 0 &amp; 0 &amp; 4.22807 \end{bmatrix} \]</div>
+
+<p>(5) Find <span>\({\bf U}\)</span> by solving \({\bf U}{\bf\Sigma} = {\bf A}{\bf V}\).
+For our reduced case, we can find \({\bf U}_R = {\bf A}{\bf V}_R {\bf \Sigma}_R^{-1}\).
+You could also find <span>\({\bf U}\)</span> by computing the eigenvectors of \({\bf AA}^T\).</p>
+
+\[{\bf U} = \overbrace{\left[ \begin{array}{ccc} 3 &amp; 2 &amp; 3 \\ 8 &amp; 8 &amp; 2 \\ 8 &amp; 7 &amp; 4 \\ 1 &amp; 8 &amp; 7 \\ 6 &amp; 4 &amp; 7 \\ \end{array} \right]}^{A} \overbrace{\left[ \begin{array}{ccc} 0.585051 &amp; -0.710399 &amp; 0.391212 \\ 0.652648 &amp; 0.126068 &amp; -0.747098 \\ 0.481418 &amp; 0.692415 &amp; 0.537398 \\ \end{array} \right]}^{V} \overbrace{\left[ \begin{array}{ccc} 0.047810 &amp; 0.0 &amp; 0.0 \\ 0.0 &amp; 0.153133 &amp; 0.0 \\ 0.0 &amp; 0.0 &amp; 0.236515 \\ \end{array} \right]}^{\Sigma^{-1}}\]
+
+\[{\bf U} = \left[ \begin{array}{ccc} 0.215371 &amp; 0.030348 &amp; 0.305490 \\ 0.519432 &amp; -0.503779 &amp; -0.419173 \\ 0.534262 &amp; -0.311021 &amp; 0.011730 \\ 0.438715 &amp; 0.787878 &amp; -0.431352\\ 0.453759 &amp; 0.166729 &amp; 0.738082\\ \end{array} \right]\]
+
+<p>We obtain the following singular value decomposition for <span>\({\bf A}\)</span>:</p>
+
+<div>\[ \overbrace{\left[ \begin{array}{ccc} 3 &amp; 2 &amp; 3 \\ 8 &amp; 8 &amp; 2 \\ 8 &amp; 7 &amp; 4 \\ 1 &amp; 8 &amp; 7 \\ 6 &amp; 4 &amp; 7 \\ \end{array} \right]}^{A} = \overbrace{\left[ \begin{array}{ccc} 0.215371 &amp; 0.030348 &amp; 0.305490 \\ 0.519432 &amp; -0.503779 &amp; -0.419173 \\ 0.534262 &amp; -0.311021 &amp; 0.011730 \\ 0.438715 &amp; 0.787878 &amp; -0.431352\\ 0.453759 &amp; 0.166729 &amp; 0.738082\\ \end{array} \right]}^{U} \overbrace{\left[ \begin{array}{ccc} 20.916 &amp; 0 &amp; 0 \\ 0 &amp; 6.53207 &amp; 0 \\ 0 &amp; 0 &amp; 4.22807 \\ \end{array} \right]}^{\Sigma} \overbrace{\left[ \begin{array}{ccc} 0.585051 &amp; 0.652648 &amp; 0.481418 \\ -0.710399 &amp; 0.126068 &amp; 0.692415\\ 0.391212 &amp; -0.747098 &amp; 0.537398\\ \end{array} \right]}^{V^T} \]</div>
+
+<p>Recall that we computed the <em>reduced</em> SVD factorization (i.e. \({\bf \Sigma}\) is square, <span>\({\bf U}\)</span> is non-square) here.</p>
+
+<h2 id="rank-null-space-and-range-of-a-matrix">Rank, null space and range of a matrix</h2>
+
+<p>Suppose \({\bf A}\) is a \(m \times n\) matrix where \(m &gt; n\) (without loss of generality):</p>
+
+\[{\bf A}= {\bf U\Sigma V}^{T} = \begin{bmatrix}\vert &amp; &amp; \vert &amp; &amp; \vert \\ \vert &amp; &amp; \vert &amp; &amp; \vert \\ {\bf u}_1 &amp; \cdots &amp; {\bf u}_n &amp; \cdots &amp; {\bf u}_m\\ \vert &amp; &amp; \vert &amp; &amp; \vert \\\vert &amp; &amp; \vert &amp; &amp; \vert \end{bmatrix} \begin{bmatrix} \sigma_1 &amp; &amp; \\ &amp; \ddots &amp; \\ &amp; &amp; \sigma_n \\ &amp;  \vdots &amp;  \\ -&amp; 0&amp; -\end{bmatrix} \begin{bmatrix} - &amp; {\bf v}_1^T &amp; - \\ &amp; \vdots &amp; \\ - &amp; {\bf v}_n^T &amp; - \end{bmatrix}\]
+
+<p>We can re-write the above as:</p>
+
+\[{\bf A} =  \begin{bmatrix}\vert &amp; &amp; \vert \\  \vert &amp; &amp; \vert \\ {\bf u}_1 &amp; \cdots &amp; {\bf u}_n \\ \vert &amp; &amp; \vert \\ \vert &amp; &amp; \vert \end{bmatrix} \begin{bmatrix} - &amp; \sigma_1 {\bf v}_1^T &amp; - \\ &amp; \vdots &amp; \\ - &amp; \sigma_n{\bf v}_n^T &amp; - \end{bmatrix}\]
+
+<p>Furthermore, the product of two matrices can be written as a sum of outer products:</p>
+
+\[{\bf A} = \sigma_1 {\bf u}_1 {\bf v}_1^T +  
+\sigma_2 {\bf u}_2 {\bf v}_2^T +  ... +
+\sigma_n {\bf u}_n {\bf v}_n^T\]
+
+<p>For a general rectangular matrix, we have:</p>
+
+\[{\bf A} = \sum_{i=1}^{s} \sigma_i {\bf u}_i {\bf v}_i^T\]
+
+<p>where \(s = \min(m,n)\).</p>
+
+<p>If \({\bf A}\) has \(s\) non-zero singular values, the matrix is full rank, i.e. \(\text{rank}({\bf A}) = s\).</p>
+
+<p>If \({\bf A}\) has \(r\) non-zero singular values, and \(r &lt; s\), the matrix is rank deficient, i.e. \(\text{rank}({\bf A}) = r\).</p>
+
+<p>In other words, the rank of \({\bf A}\) equals the number of non-zero singular values which is the same as the number of non-zero diagonal elements in \({\bf \Sigma}\).</p>
+
+<p>Rounding errors may lead to small but non-zero singular values in a
+rank deficient matrix. Singular values that are smaller than a given tolerance are assumed to be numerically equivalent to zero, defining what is sometimes called the effective rank.</p>
+
+<p>The right-singular vectors (columns of \({\bf V}\)) corresponding to vanishing
+singular values of \({\bf A}\) span the null space of \({\bf A}\),  i.e. null(\({\bf A}\)) = span{\({\bf v}_{r+1}\), \({\bf v}_{r+2}\), …, \({\bf v}_{n}\)}.</p>
+
+<p>The left-singular vectors (columns of \({\bf U}\)) corresponding to the non-zero singular values of \({\bf A}\) span the range of \({\bf A}\), i.e. range(\({\bf A}\)) = span{\({\bf u}_{1}\), \({\bf u}_{2}\), …, \({\bf u}_{r}\)}.</p>
+
+<h4 id="example">Example:</h4>
+
+\[{\bf A} = \left[ \begin{array}{cccc} \frac{1}{\sqrt{2}} &amp; -\frac{1}{\sqrt{2}} &amp; 0 &amp; 0 \\ \frac{1}{\sqrt{2}}2 &amp;\frac{1}{\sqrt{2}} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 1 &amp; 0 \end{array} \right]
+\left[ \begin{array}{ccc} 14 &amp; 0 &amp; 0 \\ 0 &amp; 14 &amp; 0 \\ 0 &amp; 0 &amp; 0 \\  0 &amp; 0 &amp; 0 \end{array} \right]
+\left[ \begin{array}{ccc} 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array} \right]\]
+
+<p>The rank of \({\bf A}\) is 2.</p>
+
+<p>The vectors \(\left[ \begin{array}{c} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \\ 0 \\ 0 \end{array} \right]\) and \(\left[ \begin{array}{c} -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \\ 0 \\ 0 \end{array} \right]\) provide an orthonormal basis for the range of \({\bf A}\).</p>
+
+<p>The vector \(\left[ \begin{array}{c} 0 \\ 0\\ 1  \end{array} \right]\)  provides an orthonormal basis for the null space of \({\bf A}\).</p>
+
+<h2 id="moore-penrose-pseudoinverse">(Moore-Penrose) Pseudoinverse</h2>
+
+<p>If the matrix \({\bf \Sigma}\) is rank deficient, we cannot get its inverse. We define instead the pseudoinverse:</p>
+
+\[({\bf \Sigma}^+)_{ii} = \begin{cases} \frac{1}{\sigma_i} &amp; \sigma_i \neq 0\\ 0 &amp; \sigma_i = 0 \end{cases}\]
+
+<p>For a general non-square matrix <span>\({\bf A}\)</span> with known SVD (\({\bf A} = {\bf U\Sigma V}^T\)), the pseudoinverse is defined as:</p>
+
+\[{\bf A}^{+} = {\bf V\Sigma}^{+}{\bf U}^T\]
+
+<p>For example, if we consider a \(m \times n\) full rank matrix where \(m &gt; n\):</p>
+
+\[{\bf A}^{+}=  
+ \begin{bmatrix} \vert &amp; ... &amp; \vert \\ {\bf v}_1 &amp; ... &amp; {\bf v}_n\\ \vert &amp; ... &amp; \vert \end{bmatrix}
+\begin{bmatrix} 1/\sigma_1 &amp; &amp; &amp; 0 &amp; \dots &amp; 0 \\ &amp; \ddots &amp; &amp; &amp; \ddots &amp;\\ &amp; &amp; 1/\sigma_n &amp; 0 &amp; \dots &amp; 0 \\ \end{bmatrix}
+ \begin{bmatrix}\vert &amp; &amp; \vert &amp; &amp; \vert \\ \vert &amp; &amp; \vert &amp; &amp; \vert \\ {\bf u}_1 &amp; \cdots &amp; {\bf u}_n &amp; \cdots &amp; {\bf u}_m\\ \vert &amp; &amp; \vert &amp; &amp; \vert \\\vert &amp; &amp; \vert &amp; &amp; \vert \end{bmatrix}^T\]
+
+<h2 id="euclidean-norm-of-matrices">Euclidean norm of matrices</h2>
+
+<p>The induced 2-norm of a matrix \({\bf A}\) can be obtained using the SVD of the matrix :</p>
+
+\[\begin{align}
+\| {\bf A}  \|_2 &amp;= \max_{\|\mathbf{x}\|=1} \|\mathbf{A x}\| = \max_{\|\mathbf{x}\|=1} \|\mathbf{U \Sigma V}^T {\bf x}\|  \\
+&amp; =\max_{\|\mathbf{x}\|=1} \|\mathbf{ \Sigma V}^T {\bf x}\| =
+\max_{\|\mathbf{V}^T{\bf x}\|=1} \|\mathbf{ \Sigma V}^T {\bf x}\|
+=\max_{\|y\|=1} \|\mathbf{ \Sigma} y\|
+\end{align}\]
+
+<p>And hence,</p>
+
+\[\| {\bf A}  \|_2= \sigma_1\]
+
+<p>In the above equations, all the notations for the norm \(\| . \|\) refer to the \(p=2\) Euclidean norm, and we used the fact that \({\bf U}\) and \({\bf V}\) are orthogonal matrices and hence \(\|{\bf U}\|_2 = \|{\bf V}\|_2 = 1\).</p>
+
+<h4 id="example-1">Example:</h4>
+
+<p>We begin with the following non-square matrix \({\bf A}\):</p>
+
+\[{\bf A} = \left[ \begin{array}{ccc} 3 &amp; 2 &amp; 3 \\ 8 &amp; 8 &amp; 2 \\ 8 &amp; 7 &amp; 4 \\ 1 &amp; 8 &amp; 7 \\ 6 &amp; 4 &amp; 7 \\ \end{array} \right].\]
+
+<p>The matrix of singular values, \({\bf \Sigma}\), computed from the SVD factorization is:</p>
+
+<div>\[ \Sigma = \left[ \begin{array}{ccc} 20.916 &amp; 0 &amp; 0 \\ 0 &amp; 6.53207 &amp; 0 \\ 0 &amp; 0 &amp; 4.22807 \\ \end{array} \right]. \]</div>
+
+<p>Consequently the 2-norm of <span>\({\bf A}\)</span> is</p>
+<div>\[ \|{\bf A}\|_2 = 20.916.\]</div>
+
+<h2 id="euclidean-norm-of-the-inverse-of-matrices">Euclidean norm of the inverse of matrices</h2>
+
+<p>Following the same derivation as above, we can show that for a full rank \(n \times n\) matrix we have:</p>
+
+\[\| {\bf A}^{-1}  \|_2= \frac{1}{\sigma_n}\]
+
+<p>where \({\sigma_n}\) is the smallest singular value.</p>
+
+<p>For non-square matrices, we can use the definition of the pseudoinverse (regardless of the rank):</p>
+
+\[\| {\bf A}^{+}  \|_2= \frac{1}{\sigma_r}\]
+
+<p>where \({\sigma_r}\) is the smallest <strong>non-zero</strong> singular value. Note that for a full rank square matrix, we have \(\| {\bf A}^{+}  \|_2 = \| {\bf A}^{-1}  \|_2\). An exception of the definition above is the zero matrix. In this case, \(\| {\bf A}^{+}  \|_2 = 0\)</p>
+
+<h2 id="2-norm-condition-number">2-Norm Condition Number</h2>
+
+<p>The 2-norm condition number of a matrix <span>\({\bf A}\)</span> is given by the ratio of its largest singular value to its smallest singular value:</p>
+
+\[\text{cond}_2(A) = \|{\bf A}\|_2 \|{\bf A}^{-1}\|_2 = \sigma_{\max}/\sigma_{\min}.\]
+
+<p>If the matrix \({\bf A}\) is rank deficient, i.e. \(\text{rank}({\bf A}) &lt; \min(m,n)\), then \(\text{cond}_2({\bf A}) = \infty\).</p>
+
+<h2 id="low-rank-approximation">Low-rank Approximation</h2>
+
+<p>The best rank-\(k\) approximation for a \(m \times n\) matrix \({\bf A}\),  where \(k &lt; s = \min(m,n)\), for some matrix norm \(\|.\|\), is one that minimizes the following problem:</p>
+
+\[\begin{aligned} &amp;\min_{ {\bf A}_k } \ \|{\bf A} - {\bf A}_k\| \\ &amp;\textrm{such that} \quad \mathrm{rank}({\bf A}_k) \le k. \end{aligned}\]
+
+<p>Under the induced <span>\(2\)</span>-norm, the best rank-<span>\(k\)</span> approximation is given by the sum of the first <span>\(k\)</span> outer products of the left and right singular vectors scaled by the corresponding singular value (where, \(\sigma_1 \ge \dots \ge \sigma_s\)):</p>
+
+\[{\bf A}_k = \sigma_1 \bf{u}_1 \bf{v}_1^T + \dots \sigma_k \bf{u}_k \bf{v}_k^T\]
+
+<p>Observe that the norm of the difference between the best approximation and the matrix under the induced <span>\(2\)</span>-norm condition is the magnitude of the \((k+1)^\text{th}\) singular value of the matrix:</p>
+
+\[\|{\bf A} - {\bf A}_k\|_2 = \left|\left|\sum_{i=k+1}^n \sigma_i \bf{u}_i \bf{v}_i^T\right|\right|_2 = \sigma_{k+1}\]
+
+<p>Note that the best rank-\({k}\) approximation to \({\bf A}\) can be stored efficiently by only storing the \({k}\) singular values \({\sigma_1,\dots,\sigma_k}\), the \({k}\) left singular vectors \({\bf u_1,\dots,\bf u_k}\), and the \({k}\) right singular vectors \({\bf v_1,\dots, \bf v_k}\).</p>
+
+<p>The figure below show best rank-<span>\(k\)</span> approximations of an image (you can find the code snippet that generates these images in the IPython notebook):</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/lowrank.png" /> </div>
+
+<h2 id="svd-summary">SVD Summary</h2>
+
+<ul>
+  <li>The SVD is a factorization of an \(m \times n\) matrix \({\bf A}\) into \({\bf A} = {\bf U} {\bf \Sigma} {\bf V}^T\) where \({\bf U}\) is an \(m \times m\) orthogonal matrix, \({\bf V}\) is an \(n \times n\) orthogonal matrix, and \({\bf \Sigma}\) is an \(m \times n\) diagonal matrix.</li>
+  <li>Reduced form: \({\bf A} = {\bf U_{R}} {\bf \Sigma_{R}} {\bf V_R}^T\) where \({\bf U_R}\) is an \(m \times s\) matrix, \({\bf V_R}\) is an \(n \times s\) matrix, and \({\bf \Sigma_{R}}\) is an \(s \times s\) diagonal matrix. Here, \(s = \min(m,n)\).</li>
+  <li>The columns of \({\bf U}\) are the eigenvectors of the matrix \(\mathbf{A}\mathbf{A}^T\), and are called the left singular vectors of \(\mathbf{A}\).</li>
+  <li>The columns of \({\bf V}\) are the eigenvectors of the matrix \(\mathbf{A}^T \mathbf{A}\), and are called the right singular vectors of \(\mathbf{A}\).</li>
+  <li>The square roots of the eigenvalues of \(\mathbf{A}^T \mathbf{A}\) are the diagonal entries of \({\bf \Sigma}\), called the singular values \(\sigma_{i} = \sqrt{\lambda_{i}}\).</li>
+  <li>The singular values \(\sigma_{i}\) are always non-negative.</li>
+</ul>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-16-svd.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2022-04-10 Yuxuan Chen <a href="mailto:yuxuan19@illinois.edu">yuxuan19@illinois.edu</a>: added svd proof, changed svd cost, included svd summary</li>
+  <li>2020-04-26 Mariana Silva <a href="mailto:mfsilva@illinois.edu">mfsilva@illinois.edu</a>: adding more details to sections</li>
+  <li>2018-11-14 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: spelling fix</li>
+  <li>2018-10-18 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: correct svd cost</li>
+  <li>2018-01-14 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: removes demo links</li>
+  <li>2017-12-04 Arun Lakshmanan <a href="mailto:lakshma2@illinois.edu">lakshma2@illinois.edu</a>: fix best rank approx, svd image</li>
+  <li>2017-11-15 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds review questions,
+adds cond num sec, removes normal equations,
+minor corrections and clarifications</li>
+  <li>2017-11-13 Arun Lakshmanan <a href="mailto:lakshma2@illinois.edu">lakshma2@illinois.edu</a>: first complete draft</li>
+  <li>2017-10-17 Luke Olson <a href="mailto:lukeo@illinois.edu">lukeo@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

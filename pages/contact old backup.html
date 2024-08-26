@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Contact - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Contact - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<!-- staff gallery start -->
+<style>
+  .custom-gallery-container {
+      width: 80%;
+      margin: 0 auto;
+  }
+  .custom-gallery-padding {
+      padding: 140px 0px 80px 0px;
+  }
+  .custom-staff-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover; /* important: no image distortion when fitting other screen size */
+      border-radius: 0.25rem;
+      transition: height 0.8s ease;
+  }
+  .custom-staff-bio {
+      padding: 10px;
+      background-color: #f8f8f8;
+      border-top: 1px solid #9c9c9c;
+      /* text-align: justify; */ /* depends if you want text justify or not */
+  }
+  .custom-hover {
+      background-color: #f8f8f8;
+      transition: background-color 0.5s ease;
+  }
+  .custom-hover:hover {
+      background-color: #fff;
+      cursor: pointer;
+  }
+</style>
+
+<script>
+  function showBio(netid) {
+    var bioBlock = document.getElementById(netid + '-bio');
+    var imgBlock = document.getElementById(netid + '-img');
+    var isBioVisible = (bioBlock.style.display === 'block');
+    bioBlock.style.display = isBioVisible ? 'none' : 'block';
+    imgBlock.style.height = isBioVisible ? '400px' : '0px';
+  }
+</script>
+
+<section class="custom-gallery-padding">
+  <div class="container-fluid">
+      <div class="row justify-content-center">
+          <div class="col-xl-5">
+              <div class="section_tittle text-center">
+                  <h2>Meet the Course Staff</h2>
+              </div>
+          </div>
+      </div>
+
+      <div class="custom-gallery-container row justify-content-center">
+          <div class="col-12 p-4" style="background-image: linear-gradient(to right, #ee390f 0%, #f9b700 100%)">
+              <div class="row">
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`mfsilva`)">
+
+                          <img id="mfsilva-img"
+                               src="/cs357/fa2024/assets/img/staff/mfsilva.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Mariana Silva">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Mariana Silva</h5>
+                              <p class="card-text">prof</p>
+                          </div>
+
+                          <div id="mfsilva-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p>Happy Hour on Tuesdays 3 pm - 4 pm Siebel 2213</p>
+                                  
+                                  <p></p>
+                                  
+                                  <a href="mailto:mfsilva@illinois.edu">Email</a>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <a href="http://mfsilva.web.illinois.edu/" target="_blank">Mariana's Webpage</a>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`kaiyaok2`)">
+
+                          <img id="kaiyaok2-img"
+                               src="/cs357/fa2024/assets/img/staff/kaiyaok2.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Kaiyao Ke">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Kaiyao Ke</h5>
+                              <p class="card-text">grad</p>
+                          </div>
+
+                          <div id="kaiyaok2-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p>Tuesday 4 pm - 5 pm In Person <br> Wednesday 5 pm - 7 pm In Person <br> Thursday 4 pm - 6 pm Online</p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`kritic3`)">
+
+                          <img id="kritic3-img"
+                               src="/cs357/fa2024/assets/img/staff/kritic3.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Kriti Chandak">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Kriti Chandak</h5>
+                              <p class="card-text">grad</p>
+                          </div>
+
+                          <div id="kritic3-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`apramey2`)">
+
+                          <img id="apramey2-img"
+                               src="/cs357/fa2024/assets/img/staff/apramey2.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Apramey Hosahalli">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Apramey Hosahalli</h5>
+                              <p class="card-text">grad</p>
+                          </div>
+
+                          <div id="apramey2-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`bhargav9`)">
+
+                          <img id="bhargav9-img"
+                               src="/cs357/fa2024/assets/img/staff/bhargav9.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Bhargav Chandaka">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Bhargav Chandaka</h5>
+                              <p class="card-text">grad</p>
+                          </div>
+
+                          <div id="bhargav9-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`arnavss2`)">
+
+                          <img id="arnavss2-img"
+                               src="/cs357/fa2024/assets/img/staff/arnavss2.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Arnav Sejal">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Arnav Sejal</h5>
+                              <p class="card-text">grad</p>
+                          </div>
+
+                          <div id="arnavss2-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`ananthm3`)">
+
+                          <img id="ananthm3-img"
+                               src="/cs357/fa2024/assets/img/staff/ananthm3.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Ananth Madan">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Ananth Madan</h5>
+                              <p class="card-text">grad</p>
+                          </div>
+
+                          <div id="ananthm3-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`dsingh14`)">
+
+                          <img id="dsingh14-img"
+                               src="/cs357/fa2024/assets/img/staff/dsingh14.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Dev Singh">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Dev Singh</h5>
+                              <p class="card-text">ugrad</p>
+                          </div>
+
+                          <div id="dsingh14-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <a href="https://devksingh.com" target="_blank">Dev's Webpage</a>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`kpate457`)">
+
+                          <img id="kpate457-img"
+                               src="/cs357/fa2024/assets/img/staff/kpate457.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Kajal Patel">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Kajal Patel</h5>
+                              <p class="card-text">ugrad</p>
+                          </div>
+
+                          <div id="kpate457-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <a href="https://kajalpatel.info/" target="_blank">Kajal's Webpage</a>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`jnylund2`)">
+
+                          <img id="jnylund2-img"
+                               src="/cs357/fa2024/assets/img/staff/jnylund2.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Jillian Nylund">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Jillian Nylund</h5>
+                              <p class="card-text">ugrad</p>
+                          </div>
+
+                          <div id="jnylund2-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`julie11`)">
+
+                          <img id="julie11-img"
+                               src="/cs357/fa2024/assets/img/staff/julie11.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Julie Lima">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Julie Lima</h5>
+                              <p class="card-text">ugrad</p>
+                          </div>
+
+                          <div id="julie11-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <div class="card max-height custom-hover" onclick="showBio(`hongyid3`)">
+
+                          <img id="hongyid3-img"
+                               src="/cs357/fa2024/assets/img/staff/hongyid3.jpg" 
+                               class="custom-staff-image card-img-top" 
+                               alt="Sam Dong">
+
+                          <div class="card-body">
+                              <h5 class="card-title">Sam Dong</h5>
+                              <p class="card-text">ugrad</p>
+                          </div>
+
+                          <div id="hongyid3-bio" class="custom-staff-bio" style="display:none;">
+                              <!--  -->
+
+                              <div class="card-links">
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                                  <p></p>
+                                  
+                              </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<!-- staff gallery end -->
+
+
+<section class="contact_info">
+  <div class="container-fluid">
+      <div class="row justify-content-center">
+          <div class="col-xl-5">
+              <div class="section_tittle text-center mb-5">
+                  <h2>How can we help you?</h2>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="container">
+    <h3>Online Message Board</h3>
+    <p>
+      We will be using Ed Discussion for all course related communication. 
+      Use this <a href="https://edstem.org/us/join/fG7hsb">link</a> to join the discussion board.
+      <strong> 
+        The course staff will post important announcements and it is your 
+        responsibility to stay updated. 
+      </strong>
+      If you have a question or a concern, please post it on Ed Discussion. Most
+      questions can be posted publicly. However, if you are asking a question
+      about your grades specifically or some other private matter, you may post
+      the question/note privately.
+      <strong>
+        Specifically, do not post answers (answers, plots, code etc.) publicly
+        on the discussion board.
+      </strong>
+    </p>
+    <br />
+    <p>
+      Please <strong>do not email the course staff</strong>, but post on
+      Ed Discussion instead. This is both to assist other students who may have
+      similar questions and to ensure you receive the fastest response possible
+      by making it visible to the entire course staff.
+    </p>
+    <p><br /></p>
+    <p>
+      We will not debug code via the message board. If you need assistance
+      debugging your code, please reach out to us during office hours.
+    </p>
+    <a href="https://edstem.org/us/join/fG7hsb" class="btn_1 my-4">Ed Discussion</a>
+  </div>
+  <br />
+
+  <div class="container mb-4">
+    <h3>Office hours</h3>
+    <p>
+      <strong> Office hours will start from week 2</strong>.
+    </p>
+   
+    <p>
+      Most office hours will be offered in-person at the Siebel basement (tutoring rooms). 
+      <strong>We also provide virtual office hours, marked with (*) in the table below</strong>.     
+      Each course staff will be 
+      using their own virtual conference meeting for office hours. You can find their links by clicking 
+      on their names in the course staff list.
+    </p>
+    <br />
+    <p>
+      The in-person office hours may be changed to online if the need arises,
+      and these changes will be posted on Ed Discussion. 
+      Check the message board before you go to in-person office hours. When needed, course staff may switch their office hours. 
+      We will also make these annoucements on Ed Discussion, to ensure you know which link to use in case of virtual office hours.     
+    </p>
+    <br />
+    <!-- <p>
+      Students registered in the City Scholars section can get assistance for the GAs during their class time on Tuesdays 5-6:15pm
+      using the virtual office hours scheduled at this slot (marked as "GA Priority" below). 
+      Other students can also use this virtual meeting, but students in the City Scholars section will get priority.
+    </p> -->
+    <!-- <br />
+    <p>
+      If you are interested in discussing conceptual topics from the course, stop by the Friday office hours (marked as "Conceptual" below). 
+      These office hours should not be used for questions like "can you please help me with question 2 on this week's homework". 
+    </p> -->
+
+    <p>
+    
+    </p>
+    <br />
+     
+    <!-- <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Monday</th>
+                <th scope="col">Tuesday</th>
+                <th scope="col">Wednesday</th>
+                <th scope="col">Thursday</th>
+                <th scope="col">Friday</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th scope="row">10am - 11am</th>
+              <td></td>
+              <td></td>
+              <td><a href="https://illinois.zoom.us/j/88462591610?pwd=NDNMMmJnNTQyVWVndTY2cE52cml6dz09" target="_blank"> Bhargav (*) </a></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">11am - 12pm</th>
+              <td></td>
+              <td></td>
+              <td><a href="https://illinois.zoom.us/j/88462591610?pwd=NDNMMmJnNTQyVWVndTY2cE52cml6dz09" target="_blank"> Bhargav (*) </a></td>
+              <td> Kriti </td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">12pm - 1pm</th>
+              <td> Kajal </td>
+              <td></td>
+              <td><a href="https://illinois.zoom.us/j/87665815377?pwd=ZEhkdHNHL3g0QmlyMGFPM1E4WWlXZz09" target="_blank"> Arnav (*) </a>, Pascal </td>
+              <td></td>
+              <td> Pascal </td>
+            </tr>
+            <tr>
+              <th scope="row">1pm - 2pm</th>
+              <td> Kajal </td>
+              <td></td>
+              <td> Pascal </td>
+              <td></td>
+              <td><a href="https://illinois.zoom.us/j/8196359618?pwd=3Z15GgJL6elwHjn6e13wf9cxn0y5px.1" target="_blank"> Dev (*) (Conceptual) </a></td>
+            </tr>
+            <tr>
+              <th scope="row">2pm - 3pm</th>
+              <td> Arnav, <a href="https://illinois.zoom.us/j/6276825334?pwd=L0dGcnNFTjRFdk5OeWlSSTU4dW1RZz09" target="_blank"> Pascal (*) </a></td>
+              <td> Jillian </td>
+              <td> Apramey, Kriti </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">3pm - 4pm</th>
+              <td> Arnav, <a href="https://illinois.zoom.us/j/6276825334?pwd=L0dGcnNFTjRFdk5OeWlSSTU4dW1RZz09" target="_blank"> Pascal (*) </a></td>
+              <td> Jillian </td>
+              <td> Apramey, Kriti </td>
+              <td></td>
+              <td> Milenko </td>
+            </tr>
+            <tr>
+              <th scope="row">4pm - 5pm</th>
+              <td> Apramey, <a href="https://illinois.zoom.us/j/82221939101?pwd=cEpNdE4wR0lBY0pMNGxDOTlJenI1QT09" target="_blank"> Milenko (*) </a></td>
+              <td> Bhargav, Kaiyao </td>
+              <td></td>
+              <td> Bhargav, <a href="https://illinois.zoom.us/j/7013524061?pwd=ZnJ2enlDSUY3OE9IRTlxQnZlK1BIZz09" target="_blank"> Kaiyao (*) </a></td>
+              <td> Milenko </td>
+            </tr>
+            <tr>  
+              <th scope="row">5pm - 6pm</th>
+              <td> Apramey, Kangyu </td>
+              <td> Bhargav, Jacob, <a href="https://illinois.zoom.us/j/84965825486?pwd=V09HQ1A2YzA4WFhRdW5IQjMzMUY4UT09" target="_blank"> Kriti (*) </a></td>
+              <td> Kaiyao, Kangyu </td>
+              <td> Arnav, <a href="https://illinois.zoom.us/j/7013524061?pwd=ZnJ2enlDSUY3OE9IRTlxQnZlK1BIZz09" target="_blank"> Kaiyao (*) </a></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">6pm - 7pm</th>
+              <td> Kangyu, Yuxuan </td>
+              <td><a href="https://illinois.zoom.us/j/8196359618?pwd=3Z15GgJL6elwHjn6e13wf9cxn0y5px.1" target="_blank"> Dev (*) </a>, Jacob,
+                  <a href="https://illinois.zoom.us/j/84965825486?pwd=V09HQ1A2YzA4WFhRdW5IQjMzMUY4UT09" target="_blank"> Kriti (*) (GA Priority) </a></td>
+              <td><a href="https://illinois.zoom.us/j/81647418038?pwd=L2R3YXhENDFUa0N1MDJ3QWxMT1hNUT09" target="_blank"> Jillian (*) </a>, Kaiyao, Kangyu </td>
+              <td> Arnav, <a href="https://illinois.zoom.us/j/85399660048?pwd=MitYOWM3WjE2OHdod0xpYWNEcUthQT09" target="_blank"> Kajal (*) </a>, Victor </td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">7pm - 8pm</th>
+              <td> Yuxuan </a></td>
+              <td><a href="https://illinois.zoom.us/j/82403558712?pwd=aGVuS1UzVTduM1drQ1ZnZU1NVDRqQT09" target="_blank"> Apramey (*) </a></td>
+              <td><a href="https://illinois.zoom.us/j/81647418038?pwd=L2R3YXhENDFUa0N1MDJ3QWxMT1hNUT09" target="_blank"> Jillian (*) </a></td>
+              <td><a href="https://illinois.zoom.us/j/85399660048?pwd=MitYOWM3WjE2OHdod0xpYWNEcUthQT09" target="_blank"> Kajal (*) </a>, Victor </td>
+              <td></td>
+          </tr>
+            </tbody>
+        </table> 
+    </div> -->
+       
+    <!-- <p>
+      The office hours schedule may be updated during the semester. Please check
+      here often for the most updated information.
+    </p> -->
+
+    <br />
+    <!-- <p> <strong>For ZJUI students only!</strong> We will be providing special office hours to ZJUI students, using the same <a href="https://illinois.zoom.us/j/89451997488?pwd=TFJITnhwVy9KMXg4WjFhc2RzQW9qQT09">Zoom link</a> of the Tuesdays GAs. </p>
+        <p> During the weeks without a quiz, we will have office hours for ZJUI students happening during their class time on Thursdays 8-10pm CT (or Fridays 9-11am China time). </p>
+        <p> During the weeks with a quiz, we will have office hours for ZJUI students happening during their class time on Mondays 8-10pm CT (or Tuesdays 9-11am China time). </p>
+        <p> ZJUI students can also attend any of the office hours that appear on the table above.</p> -->
+  </div>
+
+
+  <div class="container mb-4">
+    <h3>Queue</h3>
+    <p>The TAs and CAs will open the queue as needed during Office Hours (they will tell you if they are using the Queue).</p>
+    <p>
+      We will use the Queue to support the Group Activities on Tuesdays for the online
+      section during class time.
+    </p>
+    <a class="btn_1 my-4" href="https://queue.illinois.edu/q/cs357">Queue</a>
+  </div>
+
+
+  <div class="container mb-4">
+    <h3>Happy Hour - hosted by Mariana</h3>
+    <p><strong>Tuesdays 3pm-4pm, Siebel 2213</strong></p>
+    <p> This is not the "traditional" office hours. This is just a time when I will be at my office to connect 
+      with students. We can talk about anything you want: career goals, projects, research, 
+      hobbies, big-picture conversations about course content, other courses and programs, weather, food, etc. 
+      This is a great opportunity to foster community and connections! I have really enjoyed these happy hours in previous semesters, 
+      I hope you have a chance to stop by!
+    </p>
+    
+    <p> If you have specific questions about homework, and need someone to look at your solution and/or code,
+       this is not the best venue for that. We have over 25 office hours per week with course staff that can 
+      help you with these type of interactions. 
+    </p>
+
+    <p> Make sure to check Discord for announcements before you go to Siebel, since I may need to cancel or move the time in some weeks.
+    </p>
+  </div>
+  <br />
+
+
+  <div class="container mb-4">
+    <h3>
+      Guidelines for getting prepared for office hours and posting on Discord
+    </h3>
+
+    <br />
+    <ol>
+      <li>
+        Come to office hours with specific questions about problems you are not
+        able to solve on your own. We are not able to help students that come to
+        office hours without giving their best effort to solve a problem and
+        simply ask course staff "How do I solve this question?".
+      </li>
+      <li>
+        When you come with prepared questions, we can efficiently help many
+        students during office hours.
+      </li>
+      <li>
+        Do not post screenshots of PrairieLearn solution, or your code. 
+        You should instead explain your current approach, and what
+        has not worked. You can explain code with words, or post small code
+        snippets.
+      </li>
+      <li>
+        If you have a question about your grade, or want to talk to course staff
+        directly (professor, TAs or CAs), please post them privately to all instructors 
+        on Discord. Using DM is not as effective, since
+        only one person gets access to your message. We split tasks among
+        members of the course staff, so your message will reach the correct
+        person only if you post to all of us.
+      </li>
+    </ol>
+
+    <p>
+      Use the template below to post messages on Discord to get help with
+      PrairieLearn questions.
+    </p>
+    <br />
+    <ol>
+      <li>
+        <strong>Which problem do you need help with?</strong> You should provide
+        the assignment and question numbers, for example, HW2.3 (homework 2,
+        question 3)
+      </li>
+      <li>
+        <strong>Describe your specific question(s)</strong>. For example:
+        <ul>
+          <li>(a) "I don't understand the meaning of variable x".</li>
+          <li>(b) "I don't know how to get vector x from A"</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Describe what you have tried so far</strong>, or our general
+        thoughts about the question. For example:
+      </li>
+      <ul>
+        <li>(a) I tried solving with ... , but it failed because ...</li>
+        <li>
+          (b) I was able to get the answer .... using the approach ... . I don't
+          know why this approach does not give me the correct answer.
+        </li>
+        <li>
+          (c) I first added x and y together ... , then I got stuck at this step.
+        </li>
+      </ul>
+      <li>
+        <strong>What were the course resources you have used so far?</strong>
+        For example:
+      </li>
+      <ul>
+        <li>
+          (a) I have already looked at the course notes and slides, but still not
+          able to understand the issue explained above.
+        </li>
+        <li>(b) I watched the video lectures.</li>
+      </ul>
+    </ol>
+    <p>
+      Here is an example of a post that is consistent with the course
+      guidelines:
+    </p>
+    <br />
+    <p>
+      <img src="CW.png" style="max-height: 300pt" />
+    </p>
+  </div>
+
+  <!-- <div class="container mb-4">
+
+      <h4>Happy Hour - hosted by Mariana</h4>
+
+         <p><a href="https://illinois.zoom.us/j/88951074497?pwd=YkdoVUI4L2ZmSVNiUGJHQkV5bktqZz09">Wednesdays 5-6pm</a></p>
+        <p> This is not your "traditional" office hours. This is my time dedicated to you and your success, to talk about anything!
+            We can talk about lecture content, or interesting examples about Scientific Computing and Data Science.
+            But we can also talk about any other topic. We can just chat and drink some coffee (or your favorite drink).
+             You don't need to have a question about a homework (the Student Hours
+            hosted by TAs and CAs are more appropriate for that). We believe community and connections are important and need fostering,
+            especially during this pandemic. </p>
+
+
+
+
+    </div> -->
+
+<!-- 
+    <h4>Weeks 1 and 2: hybrid synchronous lectures</h4> 
+    <p>
+    <strong>Week 1 Tuesday: General announcements and course policies</strong>
+    </p>
+    <p>
+     Students in the in-person section  will join 
+     from CIF, students in the online section will join remotely using the 
+      <a href="https://illinois.zoom.us/j/82020014275?pwd=dlBxRGY0QXFUVmZVSHU5S2oxeXBBUT09">Zoom Meeting</a>.
+    </p>
+    <p> 
+    <strong>Week 1 Thursday: Mock group activity (GA0)</strong></p>
+    <p>
+    We will have a mock GA on Thursday, to make sure all students are familar with this format 
+    of class activity. Students in the in-person section will be sitting at tables with up to 8 students, but 
+    they will form smaller groups of 2-3 students to complete GA0. 
+    Students in the online section will be randomly assigned to groups of 3 students using the breakout rooms
+    in <a href="https://illinois.zoom.us/j/82020014275?pwd=dlBxRGY0QXFUVmZVSHU5S2oxeXBBUT09">Zoom Meeting</a> at 12:30pm CT. 
+    This will be a great opportunity to meet other students in the class. 
+    This GA is not required and will not count towards your grade.
+    </p>
+    <p>
+    <strong>Week 2 Tuesday: GA1</strong></p>
+    <p>
+    We will have the first GA covering an intro to Python.
+    Students in the in-person section will again form groups of 2-3 students. 
+    Students in the online section will be randomly assigned to groups of 3 students using the breakout rooms
+    in <a href="https://illinois.zoom.us/j/82020014275?pwd=dlBxRGY0QXFUVmZVSHU5S2oxeXBBUT09">Zoom Meeting</a> at 12:30pm CT. 
+  
+    </p>
+    <p>
+      <strong>Week 2 Thursday: Optional Study Hours</strong></p>
+      <p>
+      We will have the study hours following a hybrid format during this week only. Students can join either  
+      from CIF or 
+      <a href="https://illinois.zoom.us/j/82020014275?pwd=dlBxRGY0QXFUVmZVSHU5S2oxeXBBUT09">Zoom</a> at 12:30pm CT. Attendance is not required. 
+      Starting from week 4, the optional study hours will happen in-person only at CIF, and is available to students in <strong>both sections</strong>.
+      </p>
+  <br> -->
+
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Taylor Series - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Taylor Series - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="taylor-series">Taylor Series</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Approximate a function using a Taylor series</li>
+  <li>Approximate function derivatives using a Taylor series</li>
+  <li>Quantify the error in a Taylor series approximation</li>
+</ul>
+
+<h2 id="degree-n-polynomial">Degree <span>\(n\)</span> Polynomial</h2>
+
+<p>A polynomial in a variable <span>\(x\)</span> can always be written (or rewritten) in the form</p>
+
+<div>\[ a_{n}x^{n}+a_{n-1}x^{n-1}+\dotsb +a_{2}x^{2}+a_{1}x+a_{0} \]</div>
+<p>where <span>\(a_{i}\)</span> (\(0 \le i \le n\)) are constants.</p>
+
+<p>Using the summation notation, we can express the polynomial concisely by</p>
+
+<div>\[ \sum_{k=0}^{n} a_k x^k. \]</div>
+
+<p>If \(a_n \neq 0\), the polynomial is called an <span>\(n\)</span>-th degree polynomial.</p>
+
+<h2 id="degree-n-polynomial-as-a-linear-combination-of-monomials">Degree <span>\(n\)</span> Polynomial as a Linear Combination of Monomials</h2>
+
+<p>A monomial in a variable <span>\(x\)</span> is a power of <span>\(x\)</span> where the exponent is a nonnegative integer (i.e. <span>\(x^n\)</span> where <span>\(n\)</span> is a nonnegative integer). You might see another definition of monomial which allows a nonzero constant as a coefficient in the monomial (i.e. <span>\(a x^n\)</span> where <span>\(a\)</span> is nonzero and <span>\(n\)</span> is a nonnegative integer). Then an <span>\(n\)</span>-th degree polynomial</p>
+
+<div>\[ \sum_{k=0}^{n} a_k x^k \]</div>
+<p>can be seen as a linear combination of monomials \({x^i\ |\ 0 \le i \le n}\).</p>
+
+<h2 id="taylor-series-expansion-infinite">Taylor Series Expansion, Infinite</h2>
+
+<p>A Taylor series is a representation of a function as an infinite sum of terms that are calculated from the values of the function’s derivatives at a single point. The Taylor series expansion about <span>\(x=x_0\)</span> of a function <span>\(f(x)\)</span> that is infinitely differentiable at <span>\(x_0\)</span> is the power series</p>
+
+<div>\[ f(x_0)+\frac{f'(x_0)}{1!}(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\frac{f'''(x_0)}{3!}(x-x_0)^3+\dotsb \]</div>
+
+<p>Using the summation notation, we can express the Taylor series concisely by</p>
+
+<div>\[ \sum_{k=0}^{\infty} \frac{f^{(k)}(x_0)}{k!}(x-x_0)^k .\]</div>
+<p>(Recall that <span>\(0! = 1\)</span>)</p>
+
+<h2 id="taylor-series-expansion-finite">Taylor Series Expansion, Finite</h2>
+
+<p>In practice, however, we often cannot compute the (infinite) Taylor series of the function, or the function is not infinitely differentiable at some points. Therefore, we often have to truncate the Taylor series (use a finite number of terms) to approximate the function.</p>
+
+<h2 id="taylor-series-approximation-of-degree-n">Taylor Series Approximation of Degree <span>\(n\)</span></h2>
+
+<p>If we use the first <span>\(n+1\)</span> terms of the Taylor series, we will get</p>
+
+<div>\[ T_n(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!}(x-x_0)^k ,\]</div>
+<p>which is called a Taylor polynomial of degree <span>\(n\)</span>.</p>
+
+<h2 id="error-bound-when-truncating-a-taylor-series">Error Bound when Truncating a Taylor Series</h2>
+
+<p>Suppose that <span>\(f(x)\)</span> is an <span>\(n+1\)</span> times differentiable function of <span>\(x\)</span>, and <span>\(T_n(x)\)</span> is the Taylor polynomial of degree <span>\(n\)</span> for <span>\(f(x)\)</span> centered at <span>\(x_0\)</span>. Then when \(h = |x-x_0| \to 0\), we obtain the truncation error bound by
+\[
+\left|f(x)-T_n(x)\right|\le C \cdot h^{n+1} = O(h^{n+1})
+\]</p>
+
+<p>We will see the exact expression of <span>\(C\)</span> in the next section: Taylor Remainder Theorem.</p>
+
+<h2 id="taylor-remainder-theorem">Taylor Remainder Theorem</h2>
+
+<p>Suppose that <span>\(f(x)\)</span> is an <span>\(n+1\)</span> times differentiable function of <span>\(x\)</span>. Let <span>\(R_n(x)\)</span> denote the difference between <span>\(f(x)\)</span> and the Taylor polynomial of degree <span>\(n\)</span> for <span>\(f(x)\)</span> centered at <span>\(x_0\)</span>. Then</p>
+
+<div>\[ R_n(x) = f(x) - T_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} (x-x_0)^{n+1} \]</div>
+
+<p>for some \(\xi\) between <span>\(x\)</span> and <span>\(x_0\)</span>. Thus, the constant <span>\(C\)</span> mentioned above is</p>
+
+<div>\[ \max\limits_{\xi} \frac{\vert f^{(n+1)}(\xi)\vert }{(n+1)!}\]</div>
+<p>.</p>
+
+<h2 id="asymptotic-behavior-of-the-error">Asymptotic behavior of the error</h2>
+
+<p>Let’s say we have <span>\(f(x)\)</span> approximated using <span>\(t_n(x)\)</span>. Suppose the given interval is \(h_1\) between \(x_0\) and \(x\) and the error associated with it is \(e_1\). Let’s say we have another interval \(h_2\) and we need to find the error \(e_2\) associated with it.</p>
+
+<p>Using the formula \(e = O(h^{n+1})\), we get</p>
+
+\[e_1 \propto {h_1}^{n+1}\]
+
+\[e_2 \propto {h_2}^{n+1}\]
+
+<p>\[ \frac{e_1}{e_2} = (\frac{h_1}{h_2})^{n+1} \]</p>
+
+\[e_2 = (\frac{h_2}{h_1})^{n+1}e_1\]
+
+<h2 id="examples">Examples</h2>
+
+<h4 id="example-of-a-taylor-series-expansion">Example of a Taylor Series Expansion</h4>
+
+<p>Suppose we want to expand \(f(x) = \cos x\) about the point <span>\(x_0 = 0\)</span>. Following the formula</p>
+
+\[f(x) = f(x_0)+\frac{ f'(x_0) }{1!}(x-x_0)+\frac{ f''(x_0) }{2!}(x-x_0)^2+\frac{ f'''(x_0) }{3!}(x-x_0)^3+\dotsb\]
+
+<p>we need to compute the derivatives of \(f(x) = \cos x\) at <span>\(x = x_0\)</span>.</p>
+
+\[\begin{align}
+f(x_0) &amp;= \cos(0) = 1\\
+f'(x_0) &amp;= -\sin(0) = 0\\
+f''(x_0) &amp;= -\cos(0) = -1\\
+f'''(x_0) &amp;= \sin(0) = 0\\
+f^{(4)}(x_0) &amp;= \cos(0) = 1\\
+&amp;\vdots \end{align}\]
+
+<p>Then</p>
+
+\[\begin{align}
+\cos x &amp;= f(0)+\frac{f'(0)}{1!}x+\frac{f''(0)}{2!}x^2+\frac{f'''(0)}{3!}x^3+\dotsb\\
+&amp;= 1 + 0 - \frac{1}{2}x^2 + 0 +\dotsb\\ &amp;= \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!}x^{2k}
+\end{align}\]
+
+<h4 id="example-of-using-a-truncated-taylor-series-to-approximate-a-function">Example of Using a Truncated Taylor Series to Approximate a Function</h4>
+
+<p>Suppose we want to approximate \(f(x) = \sin x\) at <span>\(x = 2\)</span> using a degree-4 Taylor polynomial about (centered at) the point <span>\(x_0 = 0\)</span>. Following the formula</p>
+
+<div>\[ f(x) \approx f(x_0)+\frac{f'(x_0)}{1!}(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\frac{f'''(x_0)}{3!}(x-x_0)^3+\frac{f^{(4)}(x_0)}{4!}(x-x_0)^4, \]</div>
+<p>we need to compute the first <span>\(4\)</span> derivatives of \(f(x) = \sin x\) at <span>\(x = x_0\)</span>.</p>
+<div>\[\begin{align} f(x_0) &amp;= \sin(0) = 0\\ f'(x_0) &amp;= \cos(0) = 1\\ f''(x_0) &amp;= -\sin(0) = 0\\ f'''(x_0) &amp;= -\cos(0) = -1\\ f^{(4)}(x_0) &amp;= \sin(0) = 0 \end{align}\]</div>
+<p>Then</p>
+<div>\[\begin{align} \sin x &amp;\approx f(0)+\frac{f'(0)}{1!}x+\frac{f''(0)}{2!}x^2+\frac{f'''(0)}{3!}x^3+\frac{f^{(4)}(0)}{4!}x^4\\ &amp;= 0 + x + 0 - \frac{1}{3!}x^3 + 0 \\ &amp;= x - \frac{1}{6}x^3 \end{align}\]</div>
+<p>Using this truncated Taylor series centered at <span>\(x_0 = 0\)</span>, we can approximate \(f(x) = \sin(x)\) at <span>\(x=2\)</span>. To do so, we simply plug <span>\(x = 2\)</span> into the above formula for the degree 4 Taylor polynomial giving</p>
+<div>\[\begin{align} \sin(2) &amp;\approx 2 - \frac{1}{6} 2^3 \\ &amp;\approx 2 - \frac{8}{6} \\ &amp;\approx \frac{2}{3} \end{align}.\]</div>
+
+<p>We can always use Taylor polynomial with higher degrees to do the estimation. In a similar way that we derive the closed-form expression for \(\cos x\), we can write the Taylor Series for \(\sin x\) as</p>
+<div>\[ \sin x = \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k+1)!}x^{2k+1} \]</div>
+
+<h4 id="example-of-an-error-bound">Example of an Error Bound</h4>
+
+<p>Suppose we want to approximate \(f(x) = \sin x\) using a degree-4 Taylor polynomial expanded about the point <span>\(x_0 = 0\)</span>. We want to compute the error bound for this approximation. Following Taylor Remainder Theorem,</p>
+
+<div>\[ R_4(x) = \frac{f^{(5)}(\xi)}{5!} (x-x_0)^{5} \]</div>
+<p>for some \(\xi\) between <span>\(x_0\)</span> and <span>\(x\)</span>.</p>
+
+<p>If we want to find the upper bound for the absolute error, we are looking for an upper bound for \(\vert f^{(5)}(\xi)\vert\).</p>
+
+<p>Since \(f^{(5)}(x) = \cos x\), we have \(|f^{(5)}(\xi)|\le 1\). Then
+\[
+|R_4(x)| = \left|\frac{f^{(5)}(\xi)}{5!} (x-x_0)^{5}\right| = \frac{|f^{(5)}(\xi)|}{5!} |x|^{5} \le \frac{1}{120} |x|^{5}
+\]</p>
+
+<h4 id="example-of-error-predictions">Example of error predictions</h4>
+
+<p>Suppose you expand \(\sqrt{x - 10}\) in a Taylor polynomial of degree 3 about the center \(x_0 = 12\). For \(h_1 = 0.5\), you find that the Taylor truncation error is about \(10^{-4}\).</p>
+
+<p>We can use \(e_2 = (\frac{h_2}{h_1})^{n+1}e_1\) to find the Taylor truncation error for \(h_2 = 0.25\).</p>
+
+<p>Here, \(n = 3\) and hence \(e_2 = (\frac{0.25}{0.5})^{4} \cdot 10^{-4} = 0.625 \cdot 10^{-5}\).</p>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-6-taylor.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2022-01-25 Arnav Shah <a href="mailto:arnavss2@illinois.edu">arnavss2@illinois.edu</a>: Added error predictions from slides</li>
+  <li>2021-01-20 Mariana Silva <a href="mailto:mfsilva@illinois.edu">mfsilva@illinois.edu</a>: Removed FD content</li>
+  <li>2020-02-10 Peter Sentz <a href="mailto:sentz2@illinois.edu">sentz2@illinois.edu</a>: Correct some small mistakes and update some notation</li>
+  <li>2019-01-29 John Doherty <a href="mailto:jjdoher2@illinois.edu">jjdoher2@illinois.edu</a>: Added Finite Difference section from F18 activity</li>
+  <li>2018-01-14 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: removes demo links</li>
+  <li>2017-11-02 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds changelog</li>
+  <li>2017-10-27 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds review questions, minor fixes throughout</li>
+  <li>2017-10-27 Yu Meng <a href="mailto:yumeng5@illinois.edu">yumeng5@illinois.edu</a>: first complete draft</li>
+  <li>2017-10-17 Luke Olson <a href="mailto:lukeo@illinois.edu">lukeo@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

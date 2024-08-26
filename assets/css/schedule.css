@@ -1,0 +1,123 @@
+.bg-holiday {
+    background-color: #cfcfcf;
+}
+
+.bg-orange {
+    background-color: #f9ca3b;
+}
+
+.badge.badge-pq, .badge.badge-pq-link {
+    background-color: transparent;
+    color: #FA9D18;
+    border: 1px solid;
+    border-color: #FA9D18
+}
+
+.badge.badge-pq-link:hover {
+    background-color: #FDECD4
+}
+
+.badge.badge-aa, .badge.badge-aa-link {
+    background-color: transparent;
+    color: #FF7EFD;  
+    border: 1px solid;
+    border-color: #FF7EFD  
+}
+
+.badge.badge-aa-link:hover {
+    background-color: #FEE1FE
+}
+
+.badge.badge-lecture, .badge.badge-lecture-link {
+    background-color: transparent;
+    color: #008000;
+    border: 1px solid;
+    border-color: #008000;
+}
+
+.badge.badge-lecture-link:hover {
+    background-color: #DDFCD7;
+}
+
+.badge.badge-hw, .badge.badge-hw-link {
+    background-color: transparent;
+    color: #0000ff ;
+    border: 1px solid;
+    border-color: #0000ff 
+}
+
+.badge.badge-hw-link:hover {
+    background-color:#D4F9FC
+}
+
+.badge.badge-mp, .badge.badge-mp-link {
+    background-color: transparent;
+    color: #4b0082;
+    border: 1px solid;
+    border-color: #4b0082
+}
+
+.badge.badge-mp-link:hover{
+    background-color: #E1D4FC
+}
+
+.lecture-row .card {
+    height: 100%;
+}
+
+ul.lecture-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+ul.lecture-links li:not(:last-of-type)::after {
+    content: "\2022";
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.card-body *:last-child {
+    margin-bottom: 0;
+}
+
+.lecture-row div[class^="col"]:not(:first-child):not(:last-child):not(:only-child) .card {
+    border-radius: 0;
+}
+
+.lecture-row div[class^="col"]:first-child:not(:only-child) .card {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.lecture-row div[class^="col"]:last-child:not(:only-child) .card {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-left: none;
+}
+
+@media (max-width: 768px) {
+    .lecture-row div[class^="col"]:first-child:not(:only-child) .card {
+        border-bottom-left-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-right: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .lecture-row div[class^="col"]:last-child:not(:only-child) .card {
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 1px solid rgba(0, 0, 0, .125);
+        border-bottom: none;
+    }
+}
+
+.btw {
+    width: 165px !important;
+}

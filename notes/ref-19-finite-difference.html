@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Finite Difference Methods - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Finite Difference Methods - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="finite-difference-methods">Finite Difference Methods</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Approximate derivatives using the Finite Difference Method</li>
+</ul>
+
+<h2 id="finite-difference-approximation">Finite Difference Approximation</h2>
+
+<p>For a differentiable function \(f:\mathbb{R} \rightarrow \mathbb{R}\), the derivative is defined as</p>
+
+<div>\[f'(x) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \]</div>
+
+<p>Let’s consider the forward finite difference approximation to the first derivative as</p>
+
+<div>\[f'(x) \approx \frac{f(x+h)-f(x)}{h} \]</div>
+
+<p>where <span>\(h\)</span> is often called a “perturbation”, i.e., a “small” change to the variable <span>\(x\)</span> (small when compared to the magnitude of <span>\(x\)</span>). By the Taylor’s theorem, we can write</p>
+
+<div>\[f(x+h) = f(x) + f'(x)\, h + f''(\xi)\, \frac{h^2}{2} \]</div>
+
+<p>for some \(\xi \in [x,x+h]\). Rearranging the above we get</p>
+
+<div>\[f'(x) = \frac{f(x+h)-f(x)}{h} - f''(\xi)\, \frac{h}{2} \]</div>
+
+<p>Therefore, the truncation error of the finite difference approximation is bounded by \(M\,h/2\), where <span>\(M\)</span> is a bound on \(\vert f''(\xi) \vert\) for \(\xi\) near <span>\(x\)</span>.</p>
+
+<p>Using a similar approach, we can summarize the following finite difference approximations:</p>
+
+<h4 id="forward-finite-difference-method">Forward Finite Difference Method</h4>
+
+<p>In addition to the computation of \(f(x)\), this method requires one function evaluation for a given perturbation, and has truncation order \(O(h) \).</p>
+
+\[f'(x) = \frac{f(x+h)-f(x)}{h}\]
+
+<h4 id="backward-finite-difference-method">Backward Finite Difference Method</h4>
+
+<p>In addition to the computation of \(f(x)\), this method requires one function evaluation for a given perturbation, and has truncation order \(O(h) \).</p>
+
+\[f'(x) = \frac{f(x)-f(x-h)}{h}\]
+
+<h4 id="central-finite-difference-method">Central Finite Difference Method</h4>
+
+<p>This method requires two function evaluations for a given perturbation (\(f(x+h)\) and \(f(x-h)\) ), and has truncation order \(O(h^2) \).</p>
+
+\[f'(x) = \frac{f(x+h)-f(x-h)}{2h}\]
+
+<p><em>Reference text: “Scientific Computing: an introductory survey” by Michael Heath</em></p>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-6-taylor.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2021-01-20 Mariana Silva <a href="mailto:mfsilva@illinois.edu">mfsilva@illinois.edu</a>: Moved FD content from Taylor to this new section</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

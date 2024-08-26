@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Markov chains - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Markov chains - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="graphs-and-markov-chains">Graphs and Markov chains</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Express a graph as a sparse matrix.</li>
+  <li>Identify the performance benefits of a sparse matrix.</li>
+</ul>
+
+<h2 id="graphs">Graphs</h2>
+
+<h4 id="undirected-graphs">Undirected Graphs:</h4>
+
+<p>The following is an example of an undirected graph:</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/undirected_graph.png" width="300" /> </div>
+
+<p>The adjacency matrix, <span>\({\bf A}\)</span>, for undirected graphs is <em>always</em> symmetric and is defined as:</p>
+
+\[a_{ij} = \begin{cases} 1 \quad \mathrm{if} \ (\mathrm{node}_i, \mathrm{node}_j) \ \textrm{are connected} \\ 0 \quad \mathrm{otherwise} \end{cases},\]
+
+<p>where <span>\(a_{ij}\)</span> is the <span>\((i,j)\)</span> element of <span>\({\bf A}\)</span>.
+The adjacency matrix which describes the example graph above is:</p>
+
+<div>\[ {\bf A} = \begin{bmatrix} 0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \end{bmatrix}.\]</div>
+
+<h4 id="directed-graphs">Directed Graphs:</h4>
+
+<p>The following is an example of a directed graph:</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/directed_graph.png" width="300" /> </div>
+
+<p>The adjacency matrix, <span>\({\bf A}\)</span>, for directed graphs is defined as:</p>
+
+<div>\[ a_{ij} = \begin{cases} 1 \quad \mathrm{if} \ \mathrm{node}_i \leftarrow \mathrm{node}_j \\ 0 \quad \mathrm{otherwise} \end{cases}, \]</div>
+
+<p>where <span>\(a_{ij}\)</span> is the <span>\((i,j)\)</span> element of <span>\({\bf A}\)</span>. The adjacency matrix which describes the example graph above is:</p>
+
+<div>\[ {\bf A} = \begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \end{bmatrix}.\]</div>
+
+<h4 id="weighted-directed-graphs">Weighted Directed Graphs:</h4>
+
+<p>The following is an example of a weighted directed graph:</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/weighted_directed_graph.png" width="300" /> </div>
+
+<p>The adjacency matrix, <span>\({\bf A}\)</span>, for weighted directed graphs is defined as:</p>
+
+<div>\[ a_{ij} = \begin{cases} w_{ij} \quad \mathrm{if} \ \mathrm{node}_i \leftarrow \mathrm{node}_j \\ 0 \quad \ \ \mathrm{otherwise} \end{cases}, \]</div>
+
+<p>where <span>\(a_{ij}\)</span> is the <span>\((i,j)\)</span> element of <span>\({\bf A}\)</span>, and <span>\(w_{ij}\)</span> is the link weight associated with edge connecting nodes <span>\(i\)</span> and <span>\(j\)</span>. The adjacency matrix which describes the example graph above is:</p>
+
+<div>\[ {\bf A} = \begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 0.4 &amp; 0 &amp; 0 \\ 0.1 &amp; 0.5 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0.9 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1.0 &amp; 0 &amp; 1.0 &amp; 0 \\ 0 &amp; 0.5 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0.6 &amp; 0 &amp; 1.0 \end{bmatrix}.\]</div>
+
+<p>Typically, when we discuss weighted directed graphs it is in the context of transition matrices for Markov chains where the link weights across each column sum to <span>\(1\)</span>.</p>
+
+<h2 id="markov-chain">Markov Chain</h2>
+
+<p>A <strong><em>Markov chain</em></strong> is a stochastic model where the probability of future (next) state depends only on the most recent (current) state. This memoryless property of a stochastic process is called <strong><em>Markov property</em></strong>. From a probability perspective, the Markov property implies that the conditional probability distribution of the future state (conditioned on both past and current states) depends only on the current state.</p>
+
+<h2 id="markov-matrix">Markov Matrix</h2>
+
+<p>A <strong><em>Markov/Transition/Stochastic matrix</em></strong> is a square matrix used to describe the transitions of a Markov chain. Each of its entries is a non-negative real number representing a probability. Based on Markov property, next state vector \({\bf x}_{k+1}\) is obtained by left-multiplying the Markov matrix <span>\({\bf M}\)</span> with the current state vector \({\bf x}_k\).</p>
+<div>\[ {\bf x}_{k+1} = {\bf M} {\bf x}_k \]</div>
+<p>In this course, unless specifically stated otherwise, we define the transition matrix <span>\({\bf M}\)</span> as a left Markov matrix where each column sums to <span>\(1\)</span>.</p>
+
+<p><em>Note</em>: Alternative definitions in outside resources may present <span>\({\bf M}\)</span> as a right markov matrix where each row of <span>\({\bf M}\)</span> sums to <span>\(1\)</span> and the next state is obtained by right-multiplying by <span>\({\bf M}\)</span>, i.e. \({\bf x}_{k+1}^T = {\bf x}_k^T {\bf M}\).</p>
+
+<p>A steady state vector \({\bf x}^*\) is a probability vector (entries are non-negative and sum to <span>\(1\)</span>) that is unchanged by the operation with the Markov matrix <span>\(M\)</span>, i.e.</p>
+<div>\[ {\bf M} {\bf x}^* = {\bf x}^* \]</div>
+<p>Therefore, the steady state vector \({\bf x}^*\) is an eigenvector corresponding to the eigenvalue \(\lambda=1\) of matrix <span>\({\bf M}\)</span>. If there is more than one eigenvector with \(\lambda=1\), then a weighted sum of the corresponding steady state vectors will also be a steady state vector. Therefore, the steady state vector of a Markov chain may not be unique and could depend on the initial state vector.</p>
+
+<h2 id="markov-chain-example">Markov Chain Example</h2>
+
+<p>Suppose we want to build a Markov Chain model for weather predicting in UIUC during summer. We observed that:</p>
+
+<ul>
+  <li>a sunny day is \(60\%\) likely to be followed by another sunny day, \(10\%\) likely followed by a rainy day and \(30\%\) likely followed by a cloudy day;</li>
+  <li>a rainy day is \(40\%\) likely to be followed by another rainy day, \(20\%\) likely followed by a sunny day and \(40\%\) likely followed by a cloudy day;</li>
+  <li>a cloudy day is \(40\%\) likely to be followed by another cloudy day, \(30\%\) likely followed by a rainy day and \(30\%\) likely followed by a sunny day.</li>
+</ul>
+
+<p>The state diagram is shown below:</p>
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/weather.png" width="500" /> </div>
+
+<p>The Markov matrix is</p>
+<div>\[ {\bf M} = \begin{bmatrix} 0.6 &amp; 0.2 &amp; 0.3 \\ 0.1 &amp; 0.4 &amp; 0.3 \\ 0.3 &amp; 0.4 &amp; 0.4 \end{bmatrix}. \]</div>
+
+<p>If the weather on day <span>\(0\)</span> is known to be rainy, then</p>
+<div>\[ {\bf x}_0 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}; \]</div>
+<p>and we can determine the probability vector for day <span>\(1\)</span> by</p>
+<div>\[ {\bf x}_1 = {\bf M} {\bf x}_0. \]</div>
+<p>The probability distribution for the weather on day <span>\(n\)</span> is given by</p>
+<div>\[ {\bf x}_n = {\bf M}^{n} {\bf x}_0. \]</div>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-13-markov.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2018-04-01 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: Minor reorg and formatting changes</li>
+  <li>2018-03-25 Yu Meng <a href="mailto:yumeng5@illinois.edu">yumeng5@illinois.edu</a>: adds Markov chains</li>
+  <li>2018-03-01 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds more review questions</li>
+  <li>2018-01-14 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: removes demo links</li>
+  <li>2017-11-02 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds changelog, fix COO row index error</li>
+  <li>2017-10-25 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds review questions, minor fixes and formatting changes</li>
+  <li>2017-10-25 Arun Lakshmanan <a href="mailto:lakshma2@illinois.edu">lakshma2@illinois.edu</a>: first complete draft</li>
+  <li>2017-10-16 Luke Olson <a href="mailto:lukeo@illinois.edu">lukeo@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

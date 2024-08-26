@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Least Squares Data Fitting - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Least Squares Data Fitting - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="least-squares-data-fitting">Least Squares Data Fitting</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Set up a linear least-squares problem from a set of data</li>
+  <li>Use an SVD to solve the least-squares problem</li>
+  <li>Quantify the error in a least-squares problem</li>
+</ul>
+
+<h2 id="linear-regression-with-a-set-of-data">Linear Regression with a Set of Data</h2>
+
+<p>Consider a set of <span>\(m\)</span> data points (where <span>\(m&gt;2\)</span>), \({(t_1,y_1),(t_2,y_2),\dots,(t_m,y_m)}\). Suppose we want to find a straight line that best fits these data points.
+Mathematically, we are finding \(x_0\) and \(x_1\) such that</p>
+<div>\[ y_i = x_1\,t_i + x_0, \quad \forall i \in [1,m]. \]</div>
+
+<p>In matrix form, the resulting linear system is</p>
+<div>\[ \begin{bmatrix} 1 &amp; t_1 \\ 1&amp; t_2 \\ \vdots &amp; \vdots\\ 1&amp; t_m  \end{bmatrix} \begin{bmatrix} x_0\\ x_1 \end{bmatrix} = \begin{bmatrix} y_1\\ y_2\\ \vdots\\ y_m \end{bmatrix} \]</div>
+
+<p>However, it is obvious that we have more equations than unknowns, and there is usually no exact solution to the above problem.</p>
+
+<p>Generally, if we have a linear system</p>
+
+\[{\bf A x} = {\bf b}\]
+
+<p>where \({\bf A}\) is an \(m\times n\) matrix. When <span>\(m&gt;n\)</span>  we call this system <strong><em>overdetermined</em></strong> and the equality is usually not exactly satisfiable as \({\bf b}\) may not lie in the column space of <span>\({\bf A}\)</span>.</p>
+
+<p>Therefore, an overdetermined system is better written as</p>
+
+\[{\bf A x} \cong {\bf b}\]
+
+<h2 id="linear-least-squares-problem">Linear Least-squares Problem</h2>
+
+<p>For an overdetermined system \({\bf A x}\cong {\bf b}\), we are typically looking for a solution \({\bf x}\) that minimizes the squared Euclidean norm of the residual vector \({\bf r} = {\bf b} - {\bf A} {\bf x}\),</p>
+
+\[\min_{ {\bf x} } \|{\bf r}\|_2^2 = \min_{ {\bf x} } \|{\bf b} - {\bf A}  {\bf x}\|_2^2.\]
+
+<p>This problem \(A {\bf x} \cong {\bf b}\) is called a <strong><em>linear least-squares problem</em></strong>, and the solution \({\bf x}\) is called <strong><em>least-squares solution</em></strong>. Linear Least Squares problem \(A {\bf x} \cong {\bf b}\) always has solution. Here we will first focus on linear least-squares problems.</p>
+
+<h2 id="data-fitting-vs-interpolation">Data Fitting vs Interpolation</h2>
+
+<p>It is important to understand that interpolation and least-squares data fitting, while somewhat similar, are fundamentally different in their goals. In both problems we have a set of data points <span>\((t_i, y_i)\)</span>, \(i=1,\ldots,m\), and we are attempting to determine the coefficients for a linear combination of basis functions.</p>
+
+<p>With interpolation, we are looking for the linear combination of basis functions such that the resulting function passes through each of the data points <em>exactly</em>. So, for <span>\(m\)</span> unique data points, we need <span>\(m\)</span> linearly independent basis functions (and the resulting linear system will be square and full rank, so it will have an exact solution).</p>
+
+<p>In contrast, however, with least squares data fitting we have some model that we are trying to find the parameters of the model that best fits the data points. For example, with linear least squares we may have 300 noisy data points that we want to model as a quadratic function. Therefore, we are trying represent our data as</p>
+
+\[y = x_0 + x_1 t + x_2 t^2\]
+
+<p>where <span>\(x_0, x_1,\)</span> and <span>\(x_2\)</span> are the unknowns we want to determine (the coefficients to our basis functions). Because there are significantly more data points than parameters, we do not expect that the function will exactly pass through the data points. For this example, with noisy data points we would not want our function to pass through the data points exactly as we are looking to model the general trend and not capture the noise.</p>
+
+<h2 id="normal-equations">Normal Equations</h2>
+
+<p>Consider the least squares problem, \({\bf A}  {\bf x} \cong {\bf b}\), where <span>\({\bf A} \)</span> is \(m \times n\) real matrix (with <span>\(m &gt; n\)</span>). As stated above, the least squares solution minimizes the squared 2-norm of the residual.
+Hence, we want to find the \(\mathbf{x}\) that minimizes the function:</p>
+
+\[\phi(\mathbf{x}) = \|\mathbf{r}\|_2^2 = (\mathbf{b} - {\bf A} \mathbf{x})^T (\mathbf{b} - {\bf A} \mathbf{x}) = \mathbf{b}^T \mathbf{b} - 2\mathbf{x}^T {\bf A} ^T \mathbf{b} + \mathbf{x}^T {\bf A} ^T {\bf A}  \mathbf{x}.\]
+
+<p>To solve this unconstrained minimization problem, we need to satisfy the first order necessary condition to get a stationary point:</p>
+
+\[\nabla \phi(\mathbf{x}) = 0 \Rightarrow -2 {\bf A} ^T \mathbf{b} + 2 {\bf A} ^T {\bf A}  \mathbf{x} = 0.\]
+
+<p>The resulting square (\(n \times n\)) linear system</p>
+
+\[{\bf A} ^T {\bf A}  \mathbf{x} = {\bf A} ^T \mathbf{b}\]
+
+<p>is called the system of <strong>normal equations</strong>. If the matrix \({\bf A}\) is full rank, the least-squares solution is unique and given by:</p>
+
+\[{\bf x} = ({\bf A} ^T {\bf A})^{-1} {\bf A} ^T \mathbf{b}\]
+
+<p>We can look at the second-order sufficient condition of the the minimization problem by evaluating the Hessian of \(\phi\):</p>
+
+\[{\bf H} = 2 {\bf A} ^T {\bf A}\]
+
+<p>Since the Hessian is symmetric and positive-definite, we confirm that the least-squares solution \({\bf x}\) is indeed a minimizer.</p>
+
+<p>Although the least squares problem can be solved via the normal equations for full rank matrices,
+the solution tend to worsen the conditioning of the problem. Specifically,</p>
+<div>\[\text{cond}({\bf A}^T {\bf A}) = (\text{cond}({\bf A}))^2.\]</div>
+
+<p>Because of this, finding the least squares solution using Normal Equations is often not a good choice (however, simple to implement).</p>
+
+<p>Another approach to solve Linear Least Squares is to find \({\bf y} = {\bf A} {\bf x}\) which is closest to the vector \({\bf b}\).
+When the residual \({\bf r} = {\bf b} - {\bf y} = {\bf b} - {\bf A} {\bf x}\) is orthogonal to all columns of \({\bf A}\), then \({\bf y}\) is closest to \({\bf b}\).</p>
+
+<h2 id="computational-complexity">Computational Complexity</h2>
+
+<p>Since the system of normal equations yield a square and symmetric matrix, the least-squares solution can be
+computed using efficient methods such as Cholesky factorization. Note that the overall computational complexity of the factorization is
+\(\mathcal{O}(n^3)\). However, the construction of the matrix \({\bf A} ^T {\bf A}\) has complexity \(\mathcal{O}(mn^2)\).
+In typical data fitting problems, \(m &gt;&gt; n\) and hence the overall complexity of the Normal Equations method is \(\mathcal{O}(mn^2)\).</p>
+
+<h2 id="solving-least-squares-problems-using-svd">Solving Least-Squares Problems Using SVD</h2>
+
+<p>Another way to solve the least-squares problem \({\bf A} {\bf x} \cong {\bf b}\)
+(where we are looking for \({\bf x}\) that minimizes \(\|{\bf b} - {\bf A} {\bf x}\|_2^2\) is to use the singular value decomposition
+(SVD) of <span>\({\bf A}\)</span>,</p>
+
+\[{\bf A} = {\bf U \Sigma V}^T\]
+
+<p>where the squared norm of the residual becomes:</p>
+
+<div>\[ \begin{align} \|{\bf b} - {\bf A} {\bf x}\|_2^2 &amp;= \|{\bf b} - {\bf U \Sigma V}^T {\bf x}\|_2^2 &amp; (1)\\ &amp;= \|{\bf U}^T ({\bf b} - {\bf U \Sigma V}^T {\bf x})\|_2^2 &amp; (2)\\ &amp;= \|{\bf U}^T {\bf b} - {\bf \Sigma V}^T {\bf x}\|_2^2 \end{align} \]</div>
+
+<p>We can go from (1) to (2) because multiplying a vector by an orthogonal matrix does not change the 2-norm of the vector. Now let</p>
+
+<div>\[ {\bf y} = {\bf V}^T {\bf x} \]</div>
+<div>\[ {\bf z} = {\bf U}^T {\bf b}, \]</div>
+<p>then we are looking for \({\bf y}\) that minimizes</p>
+<div>\[ \|{\bf z} - \Sigma {\bf y}\|_2^2. \]</div>
+
+<p>Note that</p>
+<div>\[ \Sigma {\bf y} = \begin{bmatrix} \sigma_1 y_1\\ \sigma_2 y_2\\ \vdots \\ \sigma_n y_n \end{bmatrix},(\sigma_i = \Sigma_{i,i}) \]</div>
+<p>so we choose</p>
+<div>\[ y_i = \begin{cases} \frac{z_i}{\sigma_i} &amp; \sigma_i \neq 0\\ 0 &amp; \sigma_i = 0 \end{cases} \]</div>
+<p>which will minimize \(\|{\bf z} - {\bf \Sigma} {\bf y}\|_2^2\). Finally, we compute</p>
+
+\[{\bf x} = {\bf V} {\bf y}\]
+
+<p>to find \({\bf x}\). The expression of least-squares solution is</p>
+
+\[{\bf x} = \sum_{\sigma_i \neq 0} \frac{ {\bf u}_i^T {\bf b} }{\sigma_i} {\bf v}_i\]
+
+<p>where \({\bf u}_i\) represents the <span>\(i\)</span>th column of <span>\({\bf U}\)</span> and \({\bf v}_i\) represents the <span>\(i\)</span>th column of <span>\({\bf V}\)</span>.</p>
+
+<p>In closed-form, we can express the least-squares solution as:</p>
+
+\[{\bf x} = {\bf V\Sigma}^{+}{\bf U}^T{\bf b}\]
+
+<p>where \({\bf \Sigma}^{+}\) is the pseudoinverse of the singular matrix computed by taking the reciprocal of the non-zero diagonal entries, leaving the zeros in place and transposing the resulting matrix. For example:</p>
+
+\[\Sigma = \begin{bmatrix} \sigma_1 &amp; &amp; &amp;\\ &amp; \ddots &amp; &amp;  \\&amp;  &amp; \sigma_r &amp;\\
+&amp;  &amp;  &amp; 0\\ 0 &amp; ... &amp; ... &amp; 0 \\ \vdots &amp; \ddots &amp; \ddots &amp; \vdots \\ 0 &amp; ... &amp; ... &amp; 0 \end{bmatrix}
+\quad \implies \quad
+\Sigma^{+} = \begin{bmatrix} \frac{1}{\sigma_1} &amp; &amp; &amp; &amp; 0 &amp; \dots &amp; 0 \\ &amp; \ddots &amp; &amp; &amp; &amp; \ddots &amp;\\ &amp; &amp; \frac{1}{\sigma_r} &amp; &amp; 0 &amp; \dots &amp; 0 \\ &amp; &amp; &amp; 0 &amp; 0 &amp; \dots &amp; 0 \end{bmatrix}.\]
+
+<p>Or in reduced form:</p>
+
+\[{\bf x} = {\bf V\Sigma}_R^{+}{\bf U}_R^T{\bf b}\]
+
+<h2 id="computational-complexity-using-reduced-svd">Computational Complexity Using Reduced SVD</h2>
+
+<p>Solving the least squares problem using a <strong>given</strong> reduced SVD has time complexity  <span>\(\mathcal{O}(mn)\)</span>.</p>
+
+<p>Assume we know the reduced SVD of \(\bf A\) beforehand (which inplies that we know the entries of \(\bf V, \Sigma^{+}_{R}, U^{T}_{R}\) beforehand).</p>
+
+<p>Then, solving \(\bf z = U^{T}_{R}b\) with \(n \times m\) matrix \(\bf U^{T}_{R}\) and \(m \times 1\) vector \(\bf b\) has \(\mathcal{O}(mn)\).</p>
+
+<p>Solving \(\bf y = \Sigma^{+}_{R}z\) with \(n \times n\) matrix \(\bf \Sigma^{+}_{R}\) and \(n \times 1\) vector \(\bf z\) has \(\mathcal{O}(n)\) since \(\bf \Sigma^{+}_{R}\) is a diagonal matrix.</p>
+
+<p>Solving \(\bf x = Vy\) with \(n \times n\) matrix \(\bf V\) and \(n \times 1\) vector \(\bf y\) has \(\mathcal{O}(n^2)\).</p>
+
+<p>Therefore the time complexity is \(\mathcal{O}(n^2 + n + mn) = \mathcal{O}(mn)\) since \(m &gt; n\). We can achieve this only when we know the Reduced SVD of \(\bf A\) beforehand.</p>
+
+<h2 id="determining-residual-in-least-squares-problem-using-svd">Determining Residual in Least-Squares Problem Using SVD</h2>
+
+<p>We’ve shown above how the SVD can be used to find the least-squares solution (the solution that minimizes the squared 2-norm of the residual) to the least squares problem \({\bf A} {\bf x} \cong {\bf b}\). We can also use the SVD to determine an exact expression for the value of the residual with the least-squares solution.</p>
+
+<p>Assume in the SVD of <span>\({\bf A}\)</span>, \({\bf A} = {\bf U \Sigma V}^T\), the diagonal entries of \({\bf \Sigma}\) are in descending order (\(\sigma_1 \ge \sigma_2 \ge \dots \)), and the first <span>\(r\)</span> diagonal entries of \({\bf \Sigma}\) are nonzeros while all others are zeros, then</p>
+
+\[\begin{align} \|{\bf b} - A {\bf x}\|_2^2 &amp;= \|{\bf z} - \Sigma {\bf y}\|_2^2\\ &amp;= \sum_{i=1}^n (z_i - \sigma_i y_i)^2\\ &amp;= \sum_{i=1}^r (z_i - \sigma_i \frac{z_i}{\sigma_i})^2 + \sum_{i=r+1}^n (z_i - 0)^2\\ &amp;= \sum_{i=r+1}^n z_i^2 \end{align}\]
+
+<p>Recall that</p>
+<div>\[ {\bf z} = {\bf U}^T {\bf b}, \]</div>
+<p>we get</p>
+<div>\[ \|{\bf b} - {\bf A} {\bf x}\|_2^2 = \sum_{i=r+1}^n ({\bf u}_i^T {\bf b})^2 \]</div>
+<p>where \({\bf u}_i\) represents the <span>\(i\)</span>th column of <span>\({\bf U}\)</span>.</p>
+
+<p>(For more formal proof check 
+<a href="https://mediaspace.illinois.edu/media/t/1_w6u83js8/158464041">this video.</a>)</p>
+
+<h4 id="example-of-a-least-squares-solution-using-svd">Example of a Least-squares solution using SVD</h4>
+
+<p>Assume we have <span>\(3\)</span> data points, \({(t_i,y_i)}={(1,1.2),(2,1.9),(3,1)}\), we want to find a line that best fits these data points. The code for using SVD to solve this least-squares problem is:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="n">la</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.9</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">la</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="p">.</span><span class="n">T</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">.</span><span class="n">T</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+  <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+  <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"The function of the best line is: y = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s">"x + "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="non-linear-least-squares-problem-vs-linear-least-squares-problem">Non-linear Least-squares Problem vs. Linear Least-squares Problem</h2>
+
+<p>The above linear least-squares problem is associated with an overdetermined linear system \(A {\bf x} \cong {\bf b}.\) This problem is called “linear”  because the fitting function we are looking for is linear in the components of \({\bf x}\). For example, if we are looking for a polynomial fitting function</p>
+<div>\[ f(t,{\bf x}) = x_1 + x_2t + x_3t^2 + \dotsb + x_nt^{n-1} \]</div>
+<p>to fit the data points \({(t_i,y_i), i = 1, …,  m}\) and (<span>\(m &gt; n\)</span>), the problem can be solved using the linear least-squares method, because \(f(t,{\bf x})\) is linear in the components of \({\bf x}\) (though \(f(t,{\bf x})\) is nonlinear in <span>\(t\)</span>).</p>
+
+<p>If the fitting function \(f(t,{\bf x})\) for data points \((t_i,y_i), i = 1, ...,  m\) is nonlinear in the components of \({\bf x}\), then the problem is a non-linear least-squares problem. For example, fitting sum of exponentials</p>
+<div>\[ f(t,{\bf x}) = x_1 e^{x_2 t} + x_2 e^{x_3 t} + \dotsb + x_{n-1} e^{x_n t} \]</div>
+<p>is a <strong><em>non-linear least-squares problem</em></strong>.</p>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-17-least-squares.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2023-04-28 Yuxuan Chen <a href="mailto:yuxuan19@illinois.edu">yuxuan19@illinois.edu</a>: adding computational complexity using reduced SVD</li>
+  <li>2022-04-09 Arnav Shah <a href="mailto:arnavss2@illinois.edu">arnavss2@illinois.edu</a>: add few comments from slides asked in homework</li>
+  <li>2020-08-08 Jerry Yang <a href="mailto:jiayiy7@illinois.edu">jiayiy7@illinois.edu</a>: adds formal proof link for solving least-squares using SVD</li>
+  <li>2020-04-26 Mariana Silva <a href="mailto:mfsilva@illinois.edu">mfsilva@illinois.edu</a>: improved text overall; removed theory of the nonlinear least-squares</li>
+  <li>2018-11-14 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: fix typo in lstsq res sum range</li>
+  <li>2018-01-14 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: removes demo links</li>
+  <li>2017-11-29 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: fixes typos in lst-sq code,
+jacobian desc in nonlinear lst-sq</li>
+  <li>2017-11-17 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: fixes incorrect link</li>
+  <li>2017-11-16 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds review questions
+minor formatting changes throughout for consistency,
+adds normal equations and interp vs lst-sq sections
+removes Gauss-Newton from nonlinear least squares</li>
+  <li>2017-11-12 Yu Meng <a href="mailto:yumeng5@illinois.edu">yumeng5@illinois.edu</a>: first complete draft</li>
+  <li>2017-10-17 Luke Olson <a href="mailto:lukeo@illinois.edu">lukeo@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PCA - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="PCA - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="principal-component-analysis">Principal Component Analysis</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Understand why Principal Component Analysis is an important tool in analyzing data sets</li>
+  <li>Know the pros and cons of PCA</li>
+  <li>Be able to implement PCA algorithm</li>
+</ul>
+
+<h2 id="what-is-pca">What is PCA?</h2>
+<p><strong><em>PCA</em></strong>, or <strong><em>Principal Component Analysis</em></strong>, is an algorithm to reduce a large data set without loss of important imformation. <strong><em>PCA</em></strong> is defined as an orthogonal linear transformation that transforms the data to a new coordinate system such that the greatest variance by some scalar projection of the data comes to lie on the first coordinate (called the <strong><em>first principal component</em></strong>), the second greatest variance on the second coordinate, and so on.</p>
+
+<p>In simpler words, it detects the directions for maximum variance and project the original data set to a lower dimensional subspace (up to a change of basis) that still contains most of the important imformation.</p>
+
+<ul>
+  <li>Pros: Only the “least important” variables are omitted, the more valuable variables are kept. Moreover, the created new variables are mutually independent, which is essential for linear models.</li>
+  <li>Cons: The new variables created will have different meanings than the original dataset. (Loss of interpretability)</li>
+</ul>
+
+<h3 id="example">Example</h3>
+<p>Consider a large dataset with \(m\) samples and 30 different cell features. There are many variables that are highly correlated with each other. We can create an \(m \times\)30 matrix \(\bf A\), with the columns \(\bf F_i\) representing the different features.</p>
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_ex1_1.png" width="250" /> </div>
+<p>Now suppose we want to reduce the feature space. One method is to directly remove some feature variables. For example, we could ignore the last 20 feature columns to obtain a reduced data matrix \(\bf A^*\). This approach is simple and maintains the interpretation of the feature variables, but we have lost the dropped column information.</p>
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_ex1_2.png" width="250" /> </div>
+<p>Another approach is to use PCA. We create “new feature variables” \(\bf F_i^*\) from a specific linear combination of the original variables. Each of the new variables after PCA are all independent of one another. Now, we are able to use less variables, but still contain information of all features. The disadvantage here is that we have lost “meaningful” interpretation of the new feature variables.</p>
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_ex1_3.png" width="280" /> </div>
+
+<h2 id="data-centering">Data Centering</h2>
+
+<p>The first step of PCA is to <strong><em>center the data</em></strong>. We carry out a data shift to our data columns of \(\bf A\) such that each column has a mean of 0. For each feature column \(\bf F_i\) of \(\bf A\), we calculate the mean \(\bar{F_i}\) and do a subtraction of \(\bar{F_i}\) from each entry of the column \(\bf F_i\). We do this procedure to each column, until we obtain a new centered data set \(\bf A\).</p>
+
+<h3 id="example-1">Example</h3>
+<p>This is an example of data centering for a set of 6 data points \(p_0 = (8.6, 18.0)\), \(p_1 = (3.4, 20.6)\), \(p_2 = (4.6, 19.7)\), \(p_3 = (3.4, 11.4)\), \(p_4 = (5.4, 20.3)\), \(p_5 = (2.2, 12.4)\) on a 2d coordinate space. We first calculate the mean point \(\bar{p} = (4.6, 17.1)\), then shift all of the data points such that our new mean point is centered at \(\bar{p}' = (0, 0)\).</p>
+<div class="row">
+  <div class="column">
+    <div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_center_1.png" width="330" /> </div>
+  </div>
+  <div class="column">
+    <div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_center_2.png" width="330" hspace="100" /> </div>
+  </div>
+</div>
+
+<h2 id="covariance-matrix">Covariance Matrix</h2>
+
+<p>For our <em>centered</em> data set \(\bf A\) of dimension \(m \times n\), where \(m\) is the total number of data points and \(n\) is the number of features, the <strong><em>Covariance Matrix</em></strong> is defined to be</p>
+
+\[Cov({\bf A}) = \frac{1}{m-1} {\bf A}^T {\bf A}.\]
+
+<p>The diagonal entries of \(Cov({\bf A})\) explain how each feature correlates with itself, and the sum of the diagonal entries is called the overall variability (total variance) of the problem.</p>
+
+<h3 id="example-2">Example</h3>
+
+<p>Consider a covariance matrix in the form below. From this matrix, we can obtain:</p>
+<ul>
+  <li>\(a_{ii}\) = the variance of each \(\bf F_i\) (How \(\bf F_i\) correlates with itself). Here \(i = 1, 2, 3\).</li>
+  <li>\(a_{11} + a_{22} + a_{33}\) = Overall variability (total variance).</li>
+  <li>\(\frac{a_{ii}}{a_{11} + a_{22} + a_{33}} \cdot\) 100% = Percentage of the total variance that is explained by \(\bf F_i\). Here \(i = 1, 2, 3\).</li>
+</ul>
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_covar_mat.png" width="250" /> </div>
+
+<h2 id="diagonalization-and-principal-components">Diagonalization and Principal Components</h2>
+
+<p>PCA replaces the original feature variables with new variables, called <strong><em>principal components</em></strong>, which are orthogonal (i.e. they have zero covariations) and have variances in decreasing order. To accomplish this, we will use the diagonalization of the covariance matrix.</p>
+
+\[Cov({\bf A}) = \frac{1}{m-1} {\bf A}^T {\bf A} = \frac{1}{m-1} {\bf V D} {\bf V}^T.\]
+
+<p>Here the columns of \({\bf V}\) are the eigenvectors of \({\bf A}^T {\bf A}\), with the corresponding eigenvalues as the diagonal entries of the diagonal matrix \({\bf D}\). The largest eigenvalue of the covariance matrix corresponds to the largest variance of the dataset, and the associated eigenvector is the direction of maximum variance, called the <strong><em>first principal component</em></strong>.</p>
+
+<h3 id="example-3">Example</h3>
+<p>For the same covariance matrix in the above example, we can write it in the diagonalization form. Here, \(\frac{1}{m-1} \cdot (d_{11} + d_{22} + d_{33})\) sums up to \(a_{11} + a_{22} + a_{33}\), which represents the overall variability. The first column of \({\bf V}\) is the <em>first principal component</em>, and it represents the direction of the maximum variance \(\frac{1}{m-1} \cdot d_{11}\). Here, the first principal component accounts for \(\frac{d_{11}}{d_{11} + d_{22} + d_{33}} \cdot\) 100% of the variability of the question.</p>
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_covar_diag.png" width="1000" /> </div>
+
+<h2 id="svd-and-data-transforming">SVD and Data Transforming</h2>
+
+<p>We know that the eigenvectors of \({\bf A}^T {\bf A}\) are the right singular vectors of \({\bf A}\), or the columns of \({\bf V}\) from the SVD decomposition of \({\bf A}\) (or the rows of V transpose). Hence, instead of having to calculate the covariance matrix and solve an eigenvalue problem, we will instead get the reduced form of the SVD!</p>
+
+<p>From</p>
+
+\[{\bf A} = {\bf U \Sigma V}^T,\]
+
+<p>we can obtain the <strong><em>maximum variance</em></strong> as the largest squared singular value of \({\bf A}\), i.e. \({\sigma ^2 _{max}}\), the maximum squared entry of \({\bf \Sigma}\), and the <strong><em>first principal component</em></strong> (direction of maximum variance) as the corresponding column of \({\bf V}\).</p>
+
+<p>Finally, we can transform our dataset with respect to the directions of our principal components:</p>
+
+\[{\bf A}^* := {\bf A V = U \Sigma}.\]
+
+<p>\({\bf A V}\) is the projection of the data onto the principal components. \({\bf A V_k}\) is the projection onto the first k principal components, where \({\bf V_k}\) represents the first \(k\) columns of V.</p>
+
+<h2 id="summary-of-pca-algorithm">Summary of PCA Algorithm</h2>
+
+<p>Suppose we are given a large data set \(\bf A\) of dimension \(m \times n\), and we want to reduce the data set to a smaller one \({\bf A}^*\) of dimension \(m \times k\) without loss of important information. We can achieve this by carrying out PCA algorithm with the following steps:</p>
+
+<ol>
+  <li>Shift the data set \(\bf A\) so that it has zero mean: \({\bf A} = {\bf A} - {\bf A}.mean()\).</li>
+  <li>Compute <strong><em>SVD</em></strong> for the original data set: \({\bf A}= {\bf U \Sigma V}^T\).</li>
+  <li>Note that the <strong><em>variance</em></strong> of the data set are determined by the singular values of \(\bf A\), i.e. \(\sigma_1, ... , \sigma_n\).</li>
+  <li>Note that the columns of \(\bf V\) represent the <strong><em>principal directions</em></strong> of the data set.</li>
+  <li>Our new data set is \({\bf A}^* := {\bf AV} ={\bf U\Sigma}\).</li>
+  <li>Sometimes we want to reduce the dimension of the data set, and we only use the most important \(k\) principal directions, i.e. the first \(k\) columns of V. Thus we can change the above Equation \({\bf A}^* = {\bf AV}\) to \({\bf A}^* = {\bf AV_k}\), \({\bf A}^*\) has the desired dimension \(m \times k\).</li>
+</ol>
+
+<p>Note that the variance of the data set corresponds to the singular values: \(({\bf A}^*)^T {\bf A}^*= {\bf V}^T{\bf A}^T{\bf AV}={\bf \Sigma}^T{\bf \Sigma}\), as indicated in step 3.</p>
+
+<h2 id="alternative-definitions-of-principal-components">Alternative Definitions of Principal Components</h2>
+
+<p>There are other closely related quantities that also have the name <strong><em>principal components</em></strong>. We refer to the principal components as the direction of variances, i.e. the columns of \(\bf V\). In some other cases, the <strong><em>principal components</em></strong> refer to the variances themselves, i.e. \(\sigma_1^2, ... , \sigma_n^2\). In such a case, the direction of variances may be called the <strong><em>principal directions</em></strong>. The meaning of <strong><em>principal components</em></strong> should be clear by the context.</p>
+
+<!-- ### Python code for PCA
+
+Here we assume features are stored in columns.
+
+```python
+import numpy as np
+import numpy.linalg as la
+
+A = A - np.mean(A, axis=0).reshape((2,1))
+U, S, Vt = la.svd(A)
+A_new = A @ Vt.T
+var = A_new.T@A_new
+
+``` -->
+<!-- commenting this part out for future modifications, the current code is incomplete-->
+
+<h2 id="changelog">ChangeLog</h2>
+<ul>
+  <li>2022-04-18 Yuxuan Chen <a href="mailto:yuxuan19@illinois.edu">yuxuan19@illinois.edu</a>: Added PCA definition, data centering, covariance matrix, diagonalization, svd, examples, summary, alternative def</li>
+  <li>2020-08-09 Yikai Teng <a href="mailto:yikait2@illinois.edu">yikait2@illinois.edu</a>: outline</li>
+  <li>2020-11-30 Jerry Yang <a href="mailto:jiayiy7@illinois.edu">jiayiy7@illinois.edu</a>: fix pca code</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

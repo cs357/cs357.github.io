@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Norms and Vector Spaces - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Norms and Vector Spaces - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="norms-and-vector-spaces">Norms and Vector Spaces</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Measure a vector</li>
+</ul>
+
+<h2 id="links-and-other-content">Links and Other Content</h2>
+
+<ul>
+  <li><a href="http://mathworld.wolfram.com/InnerProduct.html">Inner Product Definition</a></li>
+</ul>
+
+<h2 id="vector-spaces">Vector Spaces</h2>
+
+<p>A <strong><em>vector space</em></strong> is a set <span>\(V\)</span> of vectors and a field <span>\(F\)</span> (elements of F are called scalars) with the following two operations:</p>
+
+<ol>
+  <li>Vector addition: \(\forall \mathbf{v},\mathbf{w} \in V\), \(\mathbf{v} + \mathbf{w} \in V\)</li>
+  <li>Scalar multiplication: \(\forall \alpha \in F, \mathbf{v} \in V\), \(\alpha \mathbf{v} \in V\)</li>
+</ol>
+
+<p>which satisfiy the following conditions:</p>
+
+<ol>
+  <li>Associativity (vector): \(\forall \mathbf{u}, \mathbf{v}, \mathbf{w} \in V\), \((\mathbf{u} + \mathbf{v}) + \mathbf{w} = \mathbf{u} + (\mathbf{v}+\mathbf{w})\)</li>
+  <li>Zero vector: There exists a vector \(\mathbf{0} \in V\) such that \(\forall \mathbf{u} \in V, \mathbf{0} + \mathbf{u} = \mathbf{u}\)</li>
+  <li>Additive inverse (negatives): For every \(\mathbf{u} \in V\), there exists \(\mathbf{-u} \in V\), such that \(\mathbf{u} + \mathbf{-u} = \mathbf{0}\).</li>
+  <li>Associativity (scalar): \(\forall \alpha, \beta \in F, \mathbf{u} \in V\), \((\alpha \beta) \mathbf{u} = \alpha (\beta \mathbf{u})\)</li>
+  <li>Distributivity: \(\forall \alpha, \beta \in F, \mathbf{u} \in V\), \((\alpha + \beta) \mathbf{u} = \alpha \mathbf{u} + \beta \mathbf{u}\)</li>
+  <li>Unitarity: \(\forall \mathbf{u} \in V\), \(1 \mathbf{u} = \mathbf{u}\)</li>
+</ol>
+
+<p>One example of a vector space is \(V=\mathbb{R}^2\) with \(F=\mathbb{R}\).</p>
+
+<h2 id="inner-product">Inner Product</h2>
+
+<p>Let <span>\(V\)</span> be a real vector space. Then, an <strong><em>inner product</em></strong> is a function \(\langle\cdot, \cdot \rangle: V \times V \rightarrow \mathbb{R}\) (i.e., it takes two vectors and returns a real number) which satisfies the following four properties, where \(\mathbf{u}, \mathbf{v}, \mathbf{w} \in V\) and \(\alpha, \beta \in \mathbb{R}\):</p>
+
+<ol>
+  <li>Positivity: \(\langle \mathbf{u}, \mathbf{u} \rangle \geq 0\)</li>
+  <li>Definiteness: \(\langle \mathbf{u}, \mathbf{u} \rangle = 0\) if and only if \(\mathbf{u} = 0\)</li>
+  <li>Symmetric: \(\langle \mathbf{u}, \mathbf{v} \rangle = \langle \mathbf{v}, \mathbf{u} \rangle\)</li>
+  <li>Linearity: \(\langle \alpha \mathbf{u} + \beta \mathbf{v}, \mathbf{w} \rangle = \alpha \langle \mathbf{u}, w \rangle + \beta \langle \mathbf{v}, \mathbf{w} \rangle\)</li>
+</ol>
+
+<p>The inner product intuitively represents the similarity between two vectors. Two vectors \(\mathbf{u}, \mathbf{v} \in V\) are said to be <strong><em>orthogonal</em></strong> if \(\langle \mathbf{u}, \mathbf{v} \rangle = 0\).</p>
+
+<h2 id="vector-norm">Vector Norm</h2>
+
+<p>A <strong><em>vector norm</em></strong> is a function \(| \mathbf{u} |: V \rightarrow \mathbb{R}^+_0\) (i.e., it takes a vector and returns a nonnegative real number) that satisfies the following properties, where \(\mathbf{u}, \mathbf{v} \in V\) and \(\alpha \in \mathbb{R}\):</p>
+
+<ol>
+  <li>Positivity: \(| \mathbf{u}| \geq 0\)</li>
+  <li>Definiteness: \(|\mathbf{u}| = 0\) if and only if \(\mathbf{u} = \mathbf{0}\)</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>Homogeneity: \(|\alpha \mathbf{u}| =</td>
+          <td>\alpha</td>
+          <td>|\mathbf{u}|\)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Triangle inequality: \(|\mathbf{u} + \mathbf{v}| \leq |\mathbf{u}| + |\mathbf{v}|\)</li>
+</ol>
+
+<p>A norm is a generalization of “absolute value” and measures the “magnitude” of the input vector.</p>
+
+<h4 id="the-p-norm">The p-norm</h4>
+
+<table>
+  <tbody>
+    <tr>
+      <td>The <strong><em>p-norm</em></strong> is defined as \(|\mathbf{w}|<em>p = (\sum</em>{i=1}^N</td>
+      <td>w_i</td>
+      <td>^p)^{\frac{1}{p}}\). The definition is a valid norm when \(p \geq 1\). If \(0 \leq p \lt 1\) then it is not a valid norm because it violates the triangle inequality.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When <span>\(p=2\)</span> (2-norm), this is called the <strong><em>Euclidean norm</em></strong> and it corresponds to the length of the vector.</p>
+
+<h4 id="vector-norm-examples">Vector Norm Examples</h4>
+
+<p>Consider the case of \(\mathbf{w} = [-3, 5, 0, 1]\), in this part we will show how to calculate the 1, 2, and \(\infty\) norm of \(\mathbf{w}\).</p>
+
+<p>For the 1-norm:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|<em>1 = (\sum</em>{i=1}^N</td>
+      <td>w_i</td>
+      <td>^1)^{\frac{1}{1}}\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|<em>1 = \sum</em>{i=1}^N</td>
+      <td>w_i</td>
+      <td>\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|_1 =</td>
+      <td>-3</td>
+      <td>+</td>
+      <td>5</td>
+      <td>+</td>
+      <td>0</td>
+      <td>+</td>
+      <td>1</td>
+      <td>\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>\(|\mathbf{w}|_1 = 3 + 5 + 0 + 1\)</p>
+
+<p>\(|\mathbf{w}|_1 = 9\)</p>
+
+<p>For the 2-norm:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|<em>2 = (\sum</em>{i=1}^N</td>
+      <td>w_i</td>
+      <td>^2)^{\frac{1}{2}}\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>\(|\mathbf{w}|<em>2 = \sqrt{\sum</em>{i=1}^N w_i^2}\)</p>
+
+<p>\(|\mathbf{w}|_2 = \sqrt{(-3)^2 + (5)^2 + (0)^2 + (1)^2}\)</p>
+
+<p>\(|\mathbf{w}|_2 = \sqrt{9 + 25 + 0 + 1}\)</p>
+
+<p>\(|\mathbf{w}|_2 = \sqrt{35} \approx 5.92\)</p>
+
+<p>For the \(\infty\)-norm:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|<em>\infty = \lim</em>{p\to\infty}(\sum_{i=1}^N</td>
+      <td>w_i</td>
+      <td>^p)^{\frac{1}{p}}\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|<em>\infty = \max</em>{i=1,\dots,N}</td>
+      <td>w_i</td>
+      <td>\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|\mathbf{w}|_\infty = \max(</td>
+      <td>-3</td>
+      <td>,</td>
+      <td>5</td>
+      <td>,</td>
+      <td>0</td>
+      <td>,</td>
+      <td>1</td>
+      <td>)\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>\(|\mathbf{w}|_\infty = \max(3, 5, 0, 1)\)</p>
+
+<p>\(|\mathbf{w}|_\infty = 5\)</p>
+
+<h2 id="matrix-norm">Matrix Norm</h2>
+
+<p>A <strong><em>general matrix norm</em></strong> is a real valued function \(| A |\) that satisfies the following properties:</p>
+
+<ol>
+  <li>\(|A| \geq 0\)</li>
+  <li>\(|A| = 0\) if and only if <span>\(A = 0\)</span></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>\(|\lambda A| =</td>
+          <td>\lambda</td>
+          <td>|A|\) for all scalars \(\lambda\)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>\(|A + B| \leq |A| + |B|\) (triangle inequality)</li>
+</ol>
+
+<p><strong><em>Induced (or operator) matrix norms</em></strong> are associated with a specific vector norm \(| \cdot |\) and are defined as:</p>
+
+<div>\[\|A\| := \max_{\|\mathbf{x}\|=1} \|A\mathbf{x}\|.\]</div>
+
+<p>An induced matrix norm is a particular type of a general matrix norm. Induced matrix norms tell us the maximum amplification of the norm of any vector when multiplied by the matrix. Note that the definition above is equivalent to</p>
+
+<div>\[\|A\| = \max_{\|\mathbf{x}\| \neq 0} \frac{\| A \mathbf{x}\|}{\|x\|}.\]</div>
+
+<p>In addition to the properties above of general matrix norms, induced matrix norms also satisfy the submultiplicative conditions:</p>
+
+<ol>
+  <li>\(| A \mathbf{x} | \leq |A| |\mathbf{x}|\)</li>
+  <li>\(|A B| \leq |A| |B|\)</li>
+</ol>
+
+<h4 id="frobenius-norm">Frobenius norm</h4>
+
+<p>The Frobenius norm is simply the sum of every element of the matrix squared, which is equivalent to applying the vector <span>\(2\)</span>-norm to the flattened matrix,</p>
+<div>\[\|A\|_F = \sqrt{\sum_{i,j} a_{ij}^2}.\]</div>
+
+<p>The Frobenius norm is an example of a general matrix norm that is not an induced norm.</p>
+
+<h4 id="the-matrix-p-norm">The matrix p-norm</h4>
+
+<p>The matrix p-norm is induced by the p-norm of a vector. It is \(|A|<em>p := \max</em>{|\mathbf{x}|_p=1} |A\mathbf{x}|_p\). There are three special cases. For the 1-norm, this reduces to the maximum absolute column sum of the matrix. For the 2-norm, this reduces the maximum singular value of the matrix. For the \(\infty\)-norm this reduces to the maximum absolute row sum of the matrix.</p>
+
+<h4 id="matrix-norm-examples">Matrix Norm Examples</h4>
+
+<p>Now we will go through a few examples with a matrix <span>\(C\)</span>, defined below.</p>
+
+<div>\[ C = \begin{bmatrix} 3 &amp; -2 \\ -1 &amp; 3 \\ \end{bmatrix} \]</div>
+
+<p>For the 1-norm:</p>
+
+<p>\(|C|<em>1 = \max</em>{|\mathbf{x}|_1=1} |C\mathbf{x}|_1\)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|C|<em>1 = \max</em>{1 \leq j \leq 3} \sum_{i=1}^3</td>
+      <td>C_{ij}</td>
+      <td>\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|C|_1 = \max(</td>
+      <td>3</td>
+      <td>+</td>
+      <td>-1</td>
+      <td>,</td>
+      <td>-2</td>
+      <td>+</td>
+      <td>3</td>
+      <td>)\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>\(|C|_1 = \max(4, 5)\)</p>
+
+<p>\(|C|_1 = 5\)</p>
+
+<p>For the 2-norm:</p>
+
+<p>The singular values are the square roots of the eigenvalues of the matrix <span>\(C^T C\)</span>. You can also find the maximum singular values by calculating the <a href="staticpage:ref-svd">SVD</a> of the matrix.</p>
+
+<p>\(|C|<em>2 = \max</em>{|\mathbf{x}|_2=1} |C\mathbf{x}|_2\)</p>
+
+<p>\(det(C^T C - \lambda I) = 0\)</p>
+
+<div>\[ det( \begin{bmatrix} 3 &amp; -1 \\ -2 &amp; 3 \\ \end{bmatrix} \begin{bmatrix} 3 &amp; -2 \\ -1 &amp; 3 \\ \end{bmatrix} - \lambda I) = 0 \]</div>
+
+<div>\[ det( \begin{bmatrix} 9+1 &amp; -6-3 \\ -3-6 &amp; 4+9 \\ \end{bmatrix} - \lambda I) = 0 \]</div>
+
+<div>\[ det( \begin{bmatrix} 10 - \lambda &amp; -9 \\ -9 &amp; 13 - \lambda \\ \end{bmatrix} ) = 0 \]</div>
+
+<p>\((10-\lambda)(13-\lambda) - 81 = 0\)</p>
+
+<p>\(\lambda^2 - 23\lambda + 130 - 81 = 0\)</p>
+
+<p>\(\lambda^2 - 23\lambda + 49 = 0\)</p>
+
+<p>\((\lambda-\frac{1}{2}(23+3\sqrt{37}))(\lambda-\frac{1}{2}(23-3\sqrt{37})) = 0\)</p>
+
+<p>\(|C|<em>2 = \sqrt{\lambda</em>{max}} = \sqrt{\frac{1}{2}(23+3\sqrt{37})} \approx 4.54\)</p>
+
+<p>For the \(\infty\)-norm:</p>
+
+<p>\(|C|<em>{\infty} = \max</em>{|\mathbf{x}|<em>{\infty}=1} |C\mathbf{x}|</em>{\infty}\)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|C|<em>{\infty} = \max</em>{1 \leq i \leq 3} \sum_{j=1}^3</td>
+      <td>C_{ij}</td>
+      <td>\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>\(|C|_{\infty} = \max(</td>
+      <td>3</td>
+      <td>+</td>
+      <td>-2</td>
+      <td>,</td>
+      <td>-1</td>
+      <td>+</td>
+      <td>3</td>
+      <td>)\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>\(|C|_{\infty} = \max(5, 4)\)</p>
+
+<p>\(|C|_{\infty} = 5\)</p>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ol>
+  <li>What is a vector space?</li>
+  <li>What is an inner product?</li>
+  <li>Given a specific function \(f(\mathbf{x})\), can \(f(\mathbf{x})\) be considered an inner product?</li>
+  <li>What is a vector norm? (What properties must hold for a function to be a vector norm?)</li>
+  <li>Given a specific function \(f(\mathbf{x})\), can \(f(\mathbf{x})\) be considered a norm?</li>
+  <li>What is the definition of an induced matrix norm? What do they measure?</li>
+  <li>What properties do induced matrix norms satisfy? Which ones are the submultiplicative properties? Be able to apply all of these properties.</li>
+  <li>For an induced matrix norm, given \(|\mathbf{x}|\) and \(|A\mathbf{x}|\) for a few vectors, can you determine a lower bound on \(|A|\)?</li>
+  <li>What is the Frobenius matrix norm?</li>
+  <li>For a given vector, compute the 1, 2 and \(\infty\) norm of the vector.</li>
+  <li>For a given matrix, compute the 1, 2 and \(\infty\) norm of the matrix.</li>
+  <li>Know what the norms of special matrices are (e.g., norm of diagonal matrix, orthogonal matrix, etc.)</li>
+</ol>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>
+    <p>2017-10-29 Erin Carrier <script type="text/javascript"><!-- h='&#x69;&#108;&#108;&#x69;&#110;&#x6f;&#x69;&#x73;&#46;&#x65;&#100;&#x75;';a='&#64;';n='&#x65;&#x63;&#x61;&#114;&#114;&#x69;&#x65;&#50;';e=n+a+h; document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>'); // --></script></p>
+
+    <noscript>ecarrie2 at illinois dot edu</noscript>
+
+    <p>: changing inner product notation, additional comments on induced vs general norms</p>
+  </li>
+  <li>
+    <p>2017-10-29 Erin Carrier <script type="text/javascript"><!-- h='&#x69;&#108;&#108;&#x69;&#110;&#x6f;&#x69;&#x73;&#46;&#x65;&#100;&#x75;';a='&#64;';n='&#x65;&#x63;&#x61;&#114;&#114;&#x69;&#x65;&#50;';e=n+a+h; document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>'); // --></script></p>
+
+    <noscript>ecarrie2 at illinois dot edu</noscript>
+
+    <p>: adds review questions, completes vector space definition, rewords matrix norm section, minor other revisions</p>
+  </li>
+  <li>
+    <p>2017-10-28 John Doherty <script type="text/javascript"><!-- h='&#x69;&#108;&#108;&#x69;&#110;&#x6f;&#x69;&#x73;&#46;&#x65;&#100;&#x75;';a='&#64;';n='&#106;&#106;&#100;&#x6f;&#104;&#x65;&#114;&#50;';e=n+a+h; document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>'); // --></script></p>
+
+    <noscript>jjdoher2 at illinois dot edu</noscript>
+
+    <p>: first complete draft</p>
+  </li>
+  <li>
+    <p>2017-10-17 Luke Olson <script type="text/javascript"><!-- h='&#x69;&#108;&#108;&#x69;&#110;&#x6f;&#x69;&#x73;&#46;&#x65;&#100;&#x75;';a='&#64;';n='&#108;&#x75;&#x6b;&#x65;&#x6f;';e=n+a+h; document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>'); // --></script></p>
+
+    <noscript>lukeo at illinois dot edu</noscript>
+
+    <p>: outline</p>
+  </li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

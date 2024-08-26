@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Condition Numbers - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Condition Numbers - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="condition-numbers">Condition Numbers</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+  <li>Compute the condition number</li>
+  <li>Quantify the impact of a high condition number</li>
+</ul>
+
+<h2 id="condition-number-definition">Condition Number Definition</h2>
+
+<p>The <strong><em>condition number</em></strong> of a square nonsingular matrix <span>\({\bf A}\)</span> is defined by
+\(\text{cond}({\bf A}) = \kappa({\bf A}) = \|{\bf A}\| \|{\bf A}^{-1}\|\)
+which is also the condition number associated with solving the linear system \({\bf A} \boldsymbol{x} = \boldsymbol{b}\). A matrix with a large condition number is said to be <strong><em>ill-conditioned</em></strong>.</p>
+
+<p>The condition number can be measured with any <span>\(p\)</span>-norm, so to be precise we typically specify the norm being used, i.e. \(\text{cond}_2\), \(\text{cond}_1, \text{cond}_{\infty}\).</p>
+
+<p>If <span>\({\bf A}\)</span> is singular (\({\bf A}^{-1}\) does not exist), we can define \(\text{cond}({\bf A}) = \infty\) by convention.</p>
+
+<p>The identity matrix is well conditioned. Assuming the inverse of \(\|{\bf A}\|\) exists, \(\text{cond}({\bf A}) = \|{\bf A}\| \|{\bf A}^{-1}\| \geq \|{\bf A}{\bf A}^{-1}\| = \|{\bf I}\| = 1.\) This is the smallest possible condition number.</p>
+
+<h4 id="things-to-remember-about-condition-numbers">Things to Remember About Condition Numbers</h4>
+<ul>
+  <li>For any matrix \({\bf A}\), \(\text{cond}({\bf A}) \geq 1.\)</li>
+  <li>For the identity matrix \({\bf I}\), \(\text{cond}({\bf I}) = 1.\)</li>
+  <li>For any matrix \({\bf A}\) and a nonzero scalar \(\gamma\), \(\text{cond}(\gamma {\bf A}) = \text{cond}({\bf A}).\)</li>
+  <li>For any diagonal matrix \({\bf D}\), \(\text{cond}({\bf D})\) = \(\frac{\text{max}\mid d_{i} \mid}{\text{min}\mid d_{i} \mid}.\)</li>
+  <li>The condition number is a measure of how close a matrix is to being singular: a matrix with large condition number is nearly singular, whereas a matrix with a condition number close to 1 is far from being singular.</li>
+  <li>The determinant of a matrix is <strong>NOT</strong> a good indicator to check whether a matrix is near singularity.</li>
+</ul>
+
+<h2 id="perturbed-matrix-problem-and-error-bound">Perturbed Matrix Problem and Error Bound</h2>
+
+<p>Let \(\boldsymbol{x}\) be the solution of \({\bf A} \boldsymbol{x} = \boldsymbol{b}\) and \(\hat{\boldsymbol{x}}\) be the solution of the perturbed problem \({\bf A} \hat{\boldsymbol{x}} = \boldsymbol{b} + \Delta \boldsymbol{b}\). Let \(\Delta \boldsymbol{x} = \hat{\boldsymbol{x}} - \boldsymbol{x}\) be the absolute error in output. Then we have
+\({\bf A} \boldsymbol{x} + {\bf A} \Delta \boldsymbol{x} = \boldsymbol{b} + \Delta \boldsymbol{b},\)
+so
+\({\bf A} \Delta \boldsymbol{x} = \Delta \boldsymbol{b}.\)
+Now we want to see how the relative error in output \(\left(\frac{\|\Delta \boldsymbol{x}\|}{\|\boldsymbol{x}\|}\right)\) is related to the relative error in input \(\left(\frac{\|\Delta \boldsymbol{b}\|}{\|\boldsymbol{b}\|}\right)\):</p>
+
+\[\begin{align}
+\frac{\|\Delta \boldsymbol{x}\| / \|\boldsymbol{x}\|}{\|\Delta \boldsymbol{b}\| / \|\boldsymbol{b}\|} &amp;= \frac{\|\Delta \boldsymbol{x}\| \|\boldsymbol{b}\|}{\|\boldsymbol{x}\| \|\Delta \boldsymbol{b}\|}\\
+&amp;= \frac{\|{\bf A}^{-1} \Delta \boldsymbol{b}\| \|{\bf A} \boldsymbol{x}\|}{\|\boldsymbol{x}\| \|\Delta \boldsymbol{b}\|}\\
+&amp;\le \frac{\|{\bf A}^{-1}\| \|\Delta \boldsymbol{b}\| \|{\bf A}\| \|\boldsymbol{x}\|}{\|\boldsymbol{x}\| \|\Delta \boldsymbol{b}\|} \\
+&amp;= \|{\bf A}^{-1}\| \|{\bf A}\|\\ &amp;= \text{cond}({\bf A})
+\end{align}\]
+
+<p>where we used \(\|{\bf A}\boldsymbol{x}\| \le \|{\bf A}\| \|\boldsymbol{x}\|, \forall \boldsymbol{x}.\)</p>
+
+<p>Then</p>
+
+\[\frac{\|\Delta \boldsymbol{x}\|}{\|\boldsymbol{x}\|} \le \text{cond}({\bf A})\frac{\|\Delta \boldsymbol{b}\|}{\|\boldsymbol{b}\|}  \qquad (1)\]
+
+<p>Therefore, if we know the relative error in input, then we can use the condition number of the system to obtain an upper bound for the relative error of our computed solution (output).</p>
+
+<h2 id="residual-vs-error">Residual vs Error</h2>
+
+<p>The <strong><em>residual vector</em></strong> \(\boldsymbol{r}\) of approximate solution \(\hat{\boldsymbol{x}}\) for the linear system \({\bf A} \boldsymbol{x} = \boldsymbol{b}\) is defined as
+\(\boldsymbol{r} = \boldsymbol{b} - {\bf A} \hat{\boldsymbol{x}}\). In the perturbed matrix problem described above, we have</p>
+
+\[\boldsymbol{r} = \boldsymbol{b} - (\boldsymbol{b} + \Delta \boldsymbol{b}) = -\Delta \boldsymbol{b}\]
+
+<p>Therefore, equation (1) can also be written as</p>
+
+\[\frac{\|\Delta \boldsymbol{x}\|}{\|\boldsymbol{x}\|} \le \text{cond}({\bf A})\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{b}\|}\]
+
+<p>If we define relative residual as \(\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{b}\|}\), we can see that small relative residual implies small relative error in approximate solution only if <span>\({\bf A}\)</span> is well-conditioned (\(\text{cond}({\bf A})\) is small).</p>
+
+<h2 id="alternative-definitions-of-relative-residual">Alternative Definitions of Relative Residual</h2>
+<p>There are other closely related quantities that also have the name “relative residual”.  Note that</p>
+
+\[\begin{align} \|\Delta \boldsymbol{x}\| &amp;= \|\hat{\boldsymbol{x}} - \boldsymbol{x}\| \\
+&amp;= \|\boldsymbol{A}^{-1}\boldsymbol{A}\hat{\boldsymbol{x}} - \boldsymbol{A}^{-1}\boldsymbol{b}\| \\
+&amp;= \|\boldsymbol{A}^{-1}(\boldsymbol{A}\hat{\boldsymbol{x}} - \boldsymbol{b})\| \\
+&amp;= \|\boldsymbol{A}^{-1}\boldsymbol{r}\|\\
+&amp;\leq \|\boldsymbol{A}^{-1}\|\cdot \| \boldsymbol{r}\| \\
+&amp;= \|\boldsymbol{A}^{-1}\|\cdot \|\boldsymbol{A}\| \frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|} = \text{cond}(\boldsymbol{A})\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|}.
+\end{align}\]
+
+<p>In summary,</p>
+
+\[\|\Delta \boldsymbol{x}\| \leq \text{cond}(\boldsymbol{A})\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|}\qquad (2)\]
+
+<p>We can divide this inequality by \(\|\boldsymbol{x}\|\) to obtain</p>
+
+\[\frac{\|\Delta \boldsymbol{x}\|}{\|\boldsymbol{x}\|} \le \text{cond}({\bf A})\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|\cdot\|\boldsymbol{x}\|}.\]
+
+<p>The quantity \(\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|\cdot\|\boldsymbol{x}\|}\) is also known as the relative residual.  This inequality is useful mathematically, but involves the norm \(\|\mathbf{x}\|\) of the unknown solution, so it isn’t a practical way to bound the relative error.  Since \(\|\boldsymbol{b}\| = \|\boldsymbol{A}\boldsymbol{x}\| \leq \|\boldsymbol{A}\|\cdot \|\boldsymbol{x}\|\), we have</p>
+
+\[\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|\cdot\|\boldsymbol{x}\|} \leq  \frac{\|\boldsymbol{r}\|}{\|\boldsymbol{b}\|}\]
+
+<p>but are sometimes equal for certain choices of \(\boldsymbol{b}\).</p>
+
+<p>We can also divide equation (2) by \(\|\hat{\boldsymbol{x}}\|\) to obtain</p>
+
+\[\frac{\|\Delta \boldsymbol{x}\|}{\|\hat{\boldsymbol{x}}\|} \le \text{cond}({\bf A})\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|\cdot\|\hat{\boldsymbol{x}}\|}.\]
+
+<p>The left-hand side is no longer the relative error (the norm of the approximate solution is in the denominator, not the exact solution), but the right-hand side can still provide a reasonable estimate of the relative error.  It is also computable, since the norm of the true solution does not appear on the right-hand side.</p>
+
+<p>For this reason, the quantity \(\frac{\|\boldsymbol{r}\|}{\|\boldsymbol{A}\|\cdot\|\hat{\boldsymbol{x}}\|}\) is also known as the relative residual.  This is used in the next section to describe the relationship between the residual and errors in the matrix \(\boldsymbol{A}\).</p>
+
+<p>While 3 different quantities all being named “relative residual” may be confusing, you should be able to determine which one is being discussed by the context.</p>
+
+<h2 id="gaussian-elimination-with-partial-pivoting-is-guaranteed-to-produce-a-small-residual">Gaussian Elimination (with Partial Pivoting) is Guaranteed to Produce a Small Residual</h2>
+
+<p>When we use Gaussian elimination with partial pivoting to compute the solution for the linear system
+\({\bf A} \boldsymbol{x} = \boldsymbol{b}\) and obtain an approximate solution \(\hat{\boldsymbol{x}}\), the residual vector \(\boldsymbol{r}\) satisfies:</p>
+
+\[\frac{\|\boldsymbol{r}\|}{\|{\bf A}\| \|\hat{\boldsymbol{x}}\|} \le \frac{\|E\|}{\|{\bf A}\|} \le c \epsilon_{mach}\]
+
+<p>where <span>\(E\)</span> is backward error in <span>\({\bf A}\)</span> (which is defined by \(({\bf A}+E)\hat{\boldsymbol{x}} = \boldsymbol{b}\)), <span>\(c\)</span> is a coefficient related to <span>\({\bf A}\)</span> and \(\epsilon_{mach}\) is machine epsilon.</p>
+
+<p>Typically <span>\(c\)</span> is small with partial pivoting, but <span>\(c\)</span> can be arbitrarily large without pivoting.</p>
+
+<p>Therefore, Gaussian elimination with partial pivoting yields small relative residual regardless of conditioning of the system.</p>
+
+<p>For more details, see <a href="https://math.la.asu.edu/~gardner/lu-round.pdf">Gaussian Elimination &amp; Roundoff Error</a>.</p>
+
+<h2 id="accuracy-rule-of-thumb-and-example">Accuracy Rule of Thumb and Example</h2>
+
+<p>Suppose we apply Gaussian elimination with partial pivoting and back substitution to the linear system \({\bf A} \boldsymbol{x} = \boldsymbol{b}\) and obtain a computed solution \(\hat{\boldsymbol{x}}\). If the entries in <span>\({\bf A}\)</span> and \(\boldsymbol{b}\) are accurate to <span>\(s\)</span> decimal digits, and \(\text{cond}({\bf A}) \approx 10^t\), then the elements of the solution vector \(\hat{\boldsymbol{x}}\) will be accurate to about <span>\(s-t\)</span> decimal digits.</p>
+
+<p>For a proof of this rule of thumb, please see <a href="https://books.google.com/books?id=xi5omWiQ-3kC&amp;pg=PA165&amp;lpg=PA165&amp;dq=gaussian+elimination+rule+of+thumb&amp;source=bl&amp;ots=KlQVax3zja&amp;sig=o4SHiYPAXodkk39u9yw0NYZe1Zo&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwiopPykkvjWAhWjzIMKHYGpDIsQ6AEIXzAK#v=onepage&amp;q=gaussian%20elimination%20rule%20of%20thumb&amp;f=false">Fundamentals of Matrix Computations by David S. Watkins</a>.</p>
+
+<p>Example: How many accurate decimal digits in the solution can we expect to obtain if we solve a linear system \({\bf A} \boldsymbol{x} = \boldsymbol{b}\) where \(\text{cond}({\bf A}) = 10^{10}\) using Gaussian elimination with partial pivoting, assuming we are using IEEE double precision and the inputs are accurate to machine precision?</p>
+
+<p>In IEEE double precision, \(\epsilon_{mach} \approx 2.2\times 10^{-16}\), which means the entries in \({\bf A}\) and \(\boldsymbol{b}\) are accurate to \(\vert\log_{10}(2.2\times 10^{-16})\vert \approx 16\) decimal digits.</p>
+
+<p>Then, using the rule of thumb, we know the entries in \(\hat{\boldsymbol{x}}\) will be accurate to about <span>\(16-10 = 6\)</span> decimal digits.</p>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-10-condition.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2022-03-19 Yuxuan Chen <a href="mailto:yuxuan19@illinois.edu">yuxuan19@illinois.edu</a>: added condition number bullet pounts, minor fixes</li>
+  <li>2017-10-27 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds review questions, minor fixes throughout, revised rule of thumb wording</li>
+  <li>2017-10-27 Yu Meng &lt;yumeng5@illinois.edu: first complete draft</li>
+  <li>2017-10-17 Luke Olson &lt;lukeo.illinois.edu: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

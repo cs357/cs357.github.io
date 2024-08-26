@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Solving Nonlinear Equations - CS 357</title>
+    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <!-- opengraph -->
+    <meta property="og:site_name" content="CS 357 Fall 2024" />
+    <meta property="og:title" content="Solving Nonlinear Equations - CS 357" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <!-- Mathjax Support -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
+    </script>
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-157880752-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<nav class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">
+                        
+                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                        
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                         id="navbarSupportedContent">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/syllabus.html">Syllabus</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/schedule.html">Schedule</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/contact.html">Support</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/lectures.html">Group Activities</a>
+                            </li>
+                            <li class="nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="/pages/quizzes.html">Quizzes</a>
+                            </li>
+                             <!--Mobile view has different textbook button. -->
+                            <li class="d-lg-none nav-item ignore-md-custom-style">
+                                <a class="nav-link" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                            <li class="d-none d-lg-block ignore-md-custom-style">
+                                <a class="btn_1" href="https://cs357.github.io/textbook/">Online Textbook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+<body>
+<style>
+    p:not(.ignore-md-custom-style) {
+        line-height: unset;
+        margin-bottom: 1em;
+        color: black;
+    }
+
+    ul {
+        all: unset;
+    }
+
+    li:not(.ignore-md-custom-style) {
+        margin-left: 20pt;
+    }
+
+    h2:not(.ignore-md-custom-style) {
+        margin-top: 2em;
+        font-weight: 500;
+    }
+
+    h3:not(.ignore-md-custom-style) {
+        margin-top: 1em;
+    }
+</style>
+<section class="section_padding">
+    <div class="container text-dark">
+        <h1 id="solving-nonlinear-equations">Solving Nonlinear Equations</h1>
+
+<hr />
+
+<h2 id="learning-objectives">Learning objectives</h2>
+
+<ul>
+  <li>Set up a problem with one parameter</li>
+  <li>Solve a problem with one parameter</li>
+</ul>
+
+<h2 id="root-of-a-function">Root of a Function</h2>
+
+<p>Consider a function \(f : \mathbb{R} \to \mathbb{R}\). The point \(x \in \mathbb{R}\)
+is called the <strong><em>root</em></strong> of \(f\) if \(f(x) = 0\).</p>
+
+<h2 id="solution-of-an-equation">Solution of an Equation</h2>
+
+<p>Finding the values of \(x\) for which \(f(x) = 0\) is useful for many applications,
+but a more general task is to find the values of \(x\) for which \(f(x) = y\). The
+same techniques used to find the root of a function can be used to solve an
+equation by manipulating the function like so:</p>
+
+\[\tilde{f}(x) = f(x) - y = 0\]
+
+<p>The new function \(\tilde{f}(x)\) has a root at the solution to the original equation \(f(x) = y\).</p>
+
+<h2 id="definition-of-jacobian-matrix">Definition of Jacobian Matrix</h2>
+
+<p>Given \(\boldsymbol{f} : \mathbb{R}^n \to \mathbb{R}^n\) we define the Jacobian matrix \({\bf J}_f\) as:</p>
+
+\[{\bf J}_f(\boldsymbol{x}) = \begin{bmatrix}
+\frac{\partial f_1}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_1}{\partial x_n} \\
+\vdots                            &amp; \ddots &amp; \vdots                            \\
+\frac{\partial f_n}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_n}{\partial x_n}
+\end{bmatrix}\]
+
+<h2 id="solving-one-equation">Solving One Equation</h2>
+
+<p>Linear functions are trivial to solve, as are quadratic functions if you have
+the quadratic formula memorized. However, polynomials of higher degree and
+non-polynomial functions are much more difficult to solve. The simplest technique
+for solving these types of equations is to use an iterative root-finding technique.
+Instead of finding out where \(f(x) = 0\) directly, we will start with an initial guess
+and improve it over multiple steps until our <em>residual</em> \(f(x)\) is sufficiently small</p>
+
+<p>We will try out the following techniques using the function:</p>
+
+\[f(x) = x^3 - x - 1\]
+
+<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/cubic.png" width="500" /> </div>
+
+<h3 id="bisection-method">Bisection Method</h3>
+
+<p>The bisection method is the simplest root-finding technique.</p>
+
+<h4 id="algorithm">Algorithm</h4>
+
+<p>The algorithm for bisection is analogous to binary search:</p>
+
+<ol>
+  <li>Take two points, \(a\) and \(b\), on each side of the root such that
+\(f(a)\) and \(f(b)\) have opposite signs.</li>
+  <li>Calculate the midpoint \(c = \frac{a + b}{2}\)</li>
+  <li>Evaluate \(f(c)\) and use \(c\) to replace either \(a\) or \(b\), keeping the signs
+of the endpoints opposite.</li>
+</ol>
+
+<p>With this algorithm we successively half the length of the interval known to
+contain the root each time.  We can repeat this process until the length of the
+interval is less than the tolerance to which we want to know the root.</p>
+
+<h4 id="computational-cost">Computational Cost</h4>
+
+<p>Conceptually bisection method uses 2 function evaluations
+at each iteration.  However, at each step either one of \(a\) or \(b\) stays the
+same.  So, at each iteration (after the first iteration), one of \(f(a)\) or
+\(f(b)\) was computed during the previous iteration.  Therefore,
+bisection method requires only one new function evaluation per iteration.
+Depending on how costly the function is to evaluate, this can be a significant
+cost savings.</p>
+
+<h4 id="convergence">Convergence</h4>
+
+<p>Bisection method has linear convergence, with a constant of 1/2.</p>
+
+<h4 id="drawbacks">Drawbacks</h4>
+
+<p>The bisection method requires us to know a little about our function.
+Specifically, \(f(x)\) must be continuous and we must have an interval
+\([a, b]\) such that</p>
+
+\[\mathrm{sgn}(f(a)) = -\mathrm{sgn}(f(b)).\]
+
+<p>Then, by the intermediate value theorem, we know that there must be a
+root in the interval \([a,b]\).</p>
+
+<p>This restriction means that the bisection method cannot solve for the root of
+\(x^2\), as it never crosses the x-axis and becomes negative.</p>
+
+<h4 id="example">Example</h4>
+
+<p>From the graph above, we can see that \(f(x)\) has a root somewhere between 1 and 2.
+It is difficult to tell exactly what the root is, but we can use the bisection
+method to approximate it. Specifically, we can set \(a = 1\) and \(b = 2\).</p>
+
+<h5 id="iteration-1">Iteration 1</h5>
+
+\[\begin{align*}
+a &amp;= 1 \\
+b &amp;= 2 \\
+c &amp;= \frac{a + b}{2} = \frac{3}{2} = 1.5
+\end{align*}\]
+
+\[\begin{align*}
+f(a) &amp;= f(1)   &amp;= 1^3   - 1   - 1 &amp;= -1    \\
+f(b) &amp;= f(2)   &amp;= 2^3   - 2   - 1 &amp;= 5     \\
+f(c) &amp;= f(1.5) &amp;= 1.5^3 - 1.5 - 1 &amp;= 0.875
+\end{align*}\]
+
+<p>Since \(f(b)\) and \(f(c)\) are both positive, we will replace \(b\) with \(c\) and
+further narrow our interval.</p>
+
+<h5 id="iteration-2">Iteration 2</h5>
+
+\[\begin{align*}
+a &amp;= 1 \\
+b &amp;= 1.5 \\
+c &amp;= \frac{a + b}{2} = \frac{2.5}{2} = 1.25
+\end{align*}\]
+
+\[\begin{align*}
+f(a) &amp;= f(1)    &amp;= -1    \\
+f(b) &amp;= f(1.5)  &amp;= 0.875 \\
+f(c) &amp;= f(1.25) &amp;= 1.25^3 - 1.25 - 1 = -0.296875
+\end{align*}\]
+
+<p>Since \(f(a)\) and \(f(c)\) are both negative, we will replace \(a\) with \(c\) and
+further narrow our interval.</p>
+
+<p>Note that as described above, we didn’t need to recalculate \(f(a)\) or \(f(b)\)
+as we had already calculated them during the previous iteration.
+Reusing these values can be a significant cost savings.</p>
+
+<h5 id="iteration-3">Iteration 3</h5>
+
+\[\begin{align*}
+a &amp;= 1.25 \\
+b &amp;= 1.5 \\
+c &amp;= \frac{a + b}{2} = \frac{1.25 + 1.5}{2} = 1.375
+\end{align*}\]
+
+\[\begin{align*}
+f(a) &amp;= f(1.25)  &amp;= -0.296875 \\
+f(b) &amp;= f(1.5)   &amp;= 0.875     \\
+f(c) &amp;= f(1.375) &amp;= 1.375^3 - 1.375 - 1 = 0.224609375
+\end{align*}\]
+
+<p>Since \(f(b)\) and \(f(c)\) are both positive, we will replace \(b\) with \(c\) and
+further narrow our interval.</p>
+
+<p>…</p>
+
+<h5 id="iteration-n">Iteration \(n\)</h5>
+
+<p>When running the code for bisection method given below, the resulting
+approximate root determined is 1.324717957244502.  With bisection,
+we can approximate the root to a desired tolerance (the value above is
+for the default tolerances).</p>
+
+<h4 id="code">Code</h4>
+
+<p>The following Python code calls SciPy’s <code class="language-plaintext highlighter-rouge">bisect</code> method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="n">opt</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">bisect</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="newtons-method">Newton’s Method</h3>
+
+<p>The Newton-Raphson Method (a.k.a. Newton’s Method) uses a Taylor series
+approximation of the function to find an approximate solution.
+Specifically, it takes the first 2
+terms:</p>
+
+\[f(x_k + h) \approx f(x_k) + f'(x_k)h\]
+
+<h4 id="algorithm-1">Algorithm</h4>
+
+<p>Starting with the Taylor series above, we can find the root of this new
+function like so:</p>
+
+<p>\(f(x_k) + f'(x_k)h = 0\)
+\(h = - \frac{f(x_k)}{f'(x_k)}\)</p>
+
+<p>This value of \(h\) can now be used to find a value of \(x\) closer to the
+root of \(f\):</p>
+
+\[x_{k+1} = x_k + h = x_k - \frac{f(x_k)}{f'(x_k)}\]
+
+<p>Geometrically, \((x_{k+1}, 0)\) is the intersection of the x-axis and the
+tangent of the graph at \((x_k, f(x_k))\).</p>
+
+<p>By repeatedly this procedure, we can get closer and closer to
+the actual root.</p>
+
+<h4 id="computational-cost-1">Computational Cost</h4>
+
+<p>With Newton’s method, at each iteration we must evaluate
+both \(f(x)\) and \(f'(x)\).</p>
+
+<h4 id="convergence-1">Convergence</h4>
+
+<p>Typically, Newton’s Method has quadratic convergence.</p>
+
+<h4 id="drawbacks-1">Drawbacks</h4>
+
+<p>Although Newton’s Method converges quickly, the additional cost of
+evaluating the derivative makes each iteration slower to compute.
+Many functions are not easily differentiable, so Newton’s Method
+is not always possible.  Even in cases when it is possible to
+evaluate the derivative, it may be quite costly.</p>
+
+<p>Convergence only works well if you are already close to the root.
+Specifically, if started too far from the root Newton’s method may
+not converge at all.</p>
+
+<h4 id="example-1">Example</h4>
+
+<p>We will need the following equations:</p>
+
+\[\begin{align*}
+f(x)  &amp;= x^3 - x - 1 \\
+f'(x) &amp;= 3x^2 - 1
+\end{align*}\]
+
+<h5 id="iteration-1-1">Iteration 1</h5>
+
+<p>From the graph above, we can see that the root is somewhere near
+\(x = 1\). We will use this as our starting position, \(x_0\).</p>
+
+\[\begin{align*}
+x_1 &amp;= x_0 - \frac{f(x_0)}{f'(x_0)} \\
+    &amp;= 1   - \frac{f(1)}{f'(1)} \\
+    &amp;= 1   - \frac{1^3 - 1 - 1}{3 \cdot 1^2 - 1} \\
+    &amp;= 1   + \frac{1}{2} \\
+    &amp;= 1.5
+\end{align*}\]
+
+<h5 id="iteration-2-1">Iteration 2</h5>
+
+\[\begin{align*}
+x_2 &amp;= x_1 - \frac{f(x_1)}{f'(x_1)} \\
+    &amp;= 1.5 - \frac{f(1.5)}{f'(1.5)} \\
+    &amp;= 1.5 - \frac{1.5^3 - 1.5 - 1}{3 \cdot 1.5^2 - 1} \\
+    &amp;= 1.5 - \frac{0.875}{5.75} \\
+    &amp;= 1.3478260869565217
+\end{align*}\]
+
+<h5 id="iteration-3-1">Iteration 3</h5>
+
+\[\begin{align*}
+x_3 &amp;= x_2 - \frac{f(x_2)}{f'(x_2)} \\
+    &amp;= 1.3478260869565217 - \frac{f(1.3478260869565217)}{f'(1.3478260869565217)} \\
+    &amp;= 1.3478260869565217 - \frac{1.3478260869565217^3 - 1.3478260869565217 - 1}{3 \cdot 1.3478260869565217^2 - 1} \\
+    &amp;= 1.3478260869565217 - \frac{0.10068217309114824}{4.449905482041588} \\
+    &amp;= 1.325200398950907
+\end{align*}\]
+
+<p>As you can see, Newton’s Method is already converging significantly
+faster than the Bisection Method.</p>
+
+<p>…</p>
+
+<h5 id="iteration-n-1">Iteration \(n\)</h5>
+
+<p>When running the code for Newton’s method given below, the resulting
+approximate root determined is 1.324717957244746.</p>
+
+<h4 id="code-1">Code</h4>
+
+<p>The following Python code calls SciPy’s <code class="language-plaintext highlighter-rouge">newton</code> method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="n">opt</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">fprime</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fprime</span><span class="o">=</span><span class="n">fprime</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="secant-method">Secant Method</h3>
+
+<p>Like Newton’s Method, secant method uses the Taylor Series to find the
+solution. However, you may not always be able to take the derivative of a
+function. Secant method gets around this by approximating the derivative
+as:</p>
+
+\[f'(x_k) \approx \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}\]
+
+<h4 id="algorithm-2">Algorithm</h4>
+
+<p>The steps involved in the Secant Method are identical to those of the
+Newton Method, with the derivative replaced by an approximation for the
+slope of the tangent.</p>
+
+<h4 id="computational-cost-2">Computational Cost</h4>
+
+<p>Similar to bisection, although secant method conceptually requires
+2 function evaluations per iteration, one of the function evaluations
+will have been computed in the previous iteration and can be reused.
+So, secant method requires 1 new function evaluation per iteration
+(after the first iteration).</p>
+
+<h4 id="convergence-2">Convergence</h4>
+
+<p>Secant method has superlinear convergence.</p>
+
+<p>More specifically, the rate of convergence \(r\) is:</p>
+
+\[r = \frac{1 + \sqrt{5}}{2} \approx 1.618\]
+
+<p>This happens to be the golden ratio.</p>
+
+<h4 id="drawbacks-2">Drawbacks</h4>
+
+<p>This technique has many of the same drawbacks as Newton’s Method, but
+does not require a derivative. It does not converge as quickly as
+Newton’s Method. It also requires two starting guesses near the root.</p>
+
+<h4 id="example-2">Example</h4>
+
+<p>Let’s start with \(x_0 = 1\) and \(x_{-1} = 2\).</p>
+
+<h5 id="iteration-1-2">Iteration 1</h5>
+
+<p>First, find an approximate for the derivative (slope):</p>
+
+\[\begin{align*}
+f'(x_0) &amp;\approx \frac{f(x_0) - f(x_{-1})}{x_0 - x_{-1}} \\
+    &amp;= \frac{f(1) - f(2)}{1 - 2} \\
+    &amp;= \frac{(1^3 - 1 - 1) - (2^3 - 2 - 1)}{1 - 2} \\
+    &amp;= \frac{(-1) - (5)}{1 - 2} \\
+    &amp;= 6
+\end{align*}\]
+
+<p>Then, use this for Newton’s Method:</p>
+
+\[\begin{align*}
+x_1 &amp;= x_0 - \frac{f(x_0)}{f'(x_0)} \\
+    &amp;= 1   - \frac{f(1)}{f'(1)} \\
+    &amp;= 1   - \frac{1^3 - 1 - 1}{6} \\
+    &amp;= 1   + \frac{1}{6} \\
+    &amp;= 1.1666666666666667
+\end{align*}\]
+
+<h5 id="iteration-2-2">Iteration 2</h5>
+
+\[\begin{align*}
+f'(x_1) &amp;\approx \frac{f(x_1) - f(x_0)}{x_1 - x_0} \\
+    &amp;= \frac{f(1.1666666666666667) - f(1)}{1.1666666666666667 - 1} \\
+    &amp;= \frac{(1.1666666666666667^3 - 1.1666666666666667 - 1) - (1^3 - 1 - 1)}{1.1666666666666667 - 1} \\
+    &amp;= \frac{(-0.5787037037037035) - (-1)}{1.1666666666666667 - 1} \\
+    &amp;= 2.5277777777777777
+\end{align*}\]
+
+\[\begin{align*}
+x_2 &amp;= x_1 - \frac{f(x_1)}{f'(x_1)} \\
+    &amp;= 1.1666666666666667 - \frac{f(1.1666666666666667)}{f'(1.1666666666666667)} \\
+    &amp;= 1.1666666666666667 - \frac{1.1666666666666667^3 - 1.1666666666666667 - 1}{2.5277777777777777} \\
+    &amp;= 1.1666666666666667 - \frac{-0.5787037037037035}{2.5277777777777777} \\
+    &amp;= 1.3956043956043955
+\end{align*}\]
+
+<h5 id="iteration-3-2">Iteration 3</h5>
+
+\[\begin{align*}
+f'(x_2) &amp;\approx \frac{f(x_2) - f(x_1)}{x_2 - x_1} \\
+    &amp;= \frac{f(1.3956043956043955) - f(1.1666666666666667)}{1.3956043956043955 - 1.1666666666666667} \\
+    &amp;= \frac{(1.3956043956043955^3 - 1.3956043956043955 - 1) - (1.1666666666666667^3 - 1.1666666666666667 - 1)}{1.3956043956043955 - 1.1666666666666667} \\
+    &amp;= \frac{(0.3226305152401032) - (-0.5787037037037035)}{1.3956043956043955 - 1.1666666666666667} \\
+    &amp;= 3.9370278683465503
+\end{align*}\]
+
+\[\begin{align*}
+x_3 &amp;= x_2 - \frac{f(x_2)}{f'(x_2)} \\
+    &amp;= 1.3956043956043955 - \frac{f(1.3956043956043955)}{f'(1.3956043956043955)} \\
+    &amp;= 1.3956043956043955 - \frac{1.3956043956043955^3 - 1.3956043956043955 - 1}{3.9370278683465503} \\
+    &amp;= 1.3956043956043955 - \frac{0.3226305152401032}{3.9370278683465503} \\
+    &amp;= 1.3136566609098987
+\end{align*}\]
+
+<p>…</p>
+
+<h5 id="iteration-n-2">Iteration \(n\)</h5>
+
+<p>When running the code for secant method given below, the resulting
+approximate root determined is 1.324717957244753.</p>
+
+<h4 id="code-2">Code</h4>
+
+<p>SciPy’s <code class="language-plaintext highlighter-rouge">newton</code> method serves double-duty. If given a function \(f\) and a
+first derivative \(f'\), it will use Newton’s Method. If it is not given a
+derivative, it will instead use the Secant Method to approximate it:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="n">opt</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="solving-many-equations">Solving Many Equations</h2>
+
+<p>Similar to root-finding in 1 dimension, we can also perform root-finding
+for multiple equations in \(n\) dimensions. Mathematically, we are trying to
+solve \(\boldsymbol{f(x) = 0}\) for \(\boldsymbol{f} : \mathbb{R}^n \to
+\mathbb{R}^n\). In other words, \(\boldsymbol{f(x)}\) is now a vector-valued
+function</p>
+
+\[\boldsymbol{f(x)} = \begin{bmatrix}
+f_1(\boldsymbol{x}) \\
+\vdots \\
+f_n(\boldsymbol{x})
+\end{bmatrix} = \begin{bmatrix}
+f_1(x_1, \ldots, x_n) \\
+\vdots \\
+f_n(x_1, \ldots, x_n)
+\end{bmatrix}\]
+
+<p>If we are instead looking for the solution to \(\boldsymbol{f(x) = y}\), we can
+rework our function like so:</p>
+
+\[\boldsymbol{\tilde{f}(x)} = \boldsymbol{f(x)} - \boldsymbol{y}
+= \boldsymbol{0}\]
+
+<p>We can think of each equation as a function that describes a surface.
+We are looking for vectors that describe the intersection of these
+surfaces.</p>
+
+<h3 id="newtons-method-1">Newton’s Method</h3>
+
+<p>The multi-dimensional equivalent of Newton’s Method involves approximating
+a function as:</p>
+
+\[\boldsymbol{f(x + s)} \approx \boldsymbol{f(x)} + {\bf J}_f(\boldsymbol{x})\boldsymbol{s}\]
+
+<p>where \({\bf J}_f\) is the <strong><em>Jacobian matrix</em></strong> of \(\boldsymbol{f}\).</p>
+
+<p>By setting this to \(\mathbf{0}\) and rearranging, we get:</p>
+
+\[\begin{align*}
+{\bf J}_f(\boldsymbol{x})\boldsymbol{s} &amp;= -\boldsymbol{f(x)} \qquad \qquad (1) \\
+\boldsymbol{s} &amp;= - {\bf J}_f(\boldsymbol{x})^{-1} \boldsymbol{f(x)}
+\end{align*}\]
+
+<p>Note that in practice we would not actually invert the Jacobian, but would
+instead solve the linear system in \((1)\) to determine the step.</p>
+
+<h4 id="algorithm-3">Algorithm</h4>
+
+<p>Similar to the way we solved for \(x_{k+1}\) in 1 dimension, we can solve for:</p>
+
+<p>\(\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \boldsymbol{s_k}\)
+where $\boldsymbol{s_k}$
+is determined by solving the linear system
+\({\bf J}_f(\boldsymbol{x_k})\boldsymbol{s_k} = -\boldsymbol{f(x_k)}.\)</p>
+
+<h4 id="drawbacks-3">Drawbacks</h4>
+
+<p>Just like in 1D, Newton’s Method only converges locally. It may also be
+expensive to compute \({\bf J}_f\) at each iteration and we must solve a linear
+system at each iteration.</p>
+
+<h4 id="example-3">Example</h4>
+
+<p>Let’s find a root for:</p>
+
+\[\boldsymbol{f}(x, y) = \begin{bmatrix}
+x + 2y - 2 \\
+x^2 + 4y^2 - 4
+\end{bmatrix}\]
+
+<p>The corresponding Jacobian and inverse Jacobian are:</p>
+
+\[{\bf J}_f(\boldsymbol{x}) = \begin{bmatrix}
+1  &amp; 2 \\
+2x &amp; 8y
+\end{bmatrix}\]
+
+\[{\bf J}_f^{-1} = \frac{1}{x - 2y} \begin{bmatrix}
+-2y &amp; \frac{1}{2} \\
+\frac{x}{2} &amp; - \frac{1}{4}
+\end{bmatrix}\]
+
+<p>In this example, as the Jacobian is a \(2 \times 2\) matrix with
+a simple inverse, we work explicitly with the inverse, even though
+we would not explicitly compute the inverse for a real problem.</p>
+
+<h5 id="iteration-1-3">Iteration 1</h5>
+
+<p>Let’s start at \(\boldsymbol{x_0} = \begin{bmatrix}1 \\ 1\end{bmatrix}\).</p>
+
+\[\begin{align*}
+\boldsymbol{x_1} &amp;= \boldsymbol{x_0} - {\bf J}_f(\boldsymbol{x_0})^{-1} \boldsymbol{f(x_0)} \\
+    &amp;= \begin{bmatrix}1 \\ 1\end{bmatrix}
+        - \frac{1}{1 - 2}\begin{bmatrix}-2 &amp; \frac{1}{2} \\ \frac{1}{2} &amp; - \frac{1}{4}\end{bmatrix}
+        \begin{bmatrix}1 \\ 1\end{bmatrix} \\
+    &amp;= \begin{bmatrix}1 \\ 1\end{bmatrix} + \begin{bmatrix}-1.5 \\ 0.25\end{bmatrix} \\
+    &amp;= \begin{bmatrix}-0.5 \\ 1.25\end{bmatrix}
+\end{align*}\]
+
+<h5 id="iteration-2-3">Iteration 2</h5>
+
+\[\begin{align*}
+\boldsymbol{x_2} &amp;= \boldsymbol{x_1} - {\bf J}_f(\boldsymbol{x_1})^{-1} \boldsymbol{f(x_1)} \\
+    &amp;= \begin{bmatrix}-0.5 \\ 1.25\end{bmatrix}
+        - \frac{1}{-0.5 - 2.5}\begin{bmatrix}-2.5 &amp; \frac{1}{2} \\ - \frac{1}{4} &amp; - \frac{1}{4}\end{bmatrix}
+        \begin{bmatrix}0 \\ 2.5\end{bmatrix} \\
+    &amp;= \begin{bmatrix}-0.5 \\ 1.25\end{bmatrix} + \frac{1}{3}\begin{bmatrix}1.25 \\ -0.625\end{bmatrix} \\
+    &amp;= \begin{bmatrix}-0.08333333 \\ 1.04166667\end{bmatrix}
+\end{align*}\]
+
+<h5 id="iteration-3-3">Iteration 3</h5>
+
+\[\begin{align*}
+\boldsymbol{x_3} &amp;= \boldsymbol{x_2} - {\bf J}_f(\boldsymbol{x_2})^{-1} \boldsymbol{f(x_2)} \\
+    &amp;= \begin{bmatrix}-0.08333333 \\ 1.04166667\end{bmatrix}
+        - \frac{1}{-0.08333333 - 2.08333334}\begin{bmatrix}-2.08333334 &amp; 0.5 \\ -0.041666665 &amp; -0.25\end{bmatrix}
+        \begin{bmatrix}9.99999993922529 \cdot 10^{-9} \\ 0.34722224944444413\end{bmatrix} \\
+    &amp;= \begin{bmatrix}-0.08333333 \\ 1.04166667\end{bmatrix}
+        + \frac{1}{2.1666666699999997}\begin{bmatrix}0.1736111 \\ -0.08680556\end{bmatrix} \\
+    &amp;= \begin{bmatrix}-0.00320513 \\ 1.00160256\end{bmatrix}
+\end{align*}\]
+
+<p>…</p>
+
+<h5 id="iteration-n-3">Iteration \(n\)</h5>
+
+<p>When running the code for Newton’s method given below, the resulting
+approximate root determined is
+\(\begin{bmatrix}-2.74060567 \cdot 10^{-16} &amp; 1\end{bmatrix}^\top\).</p>
+
+<h4 id="code-3">Code</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="n">opt</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">xvec</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xvec</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span>
+    <span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">Jf</span><span class="p">(</span><span class="n">xvec</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xvec</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="mi">8</span><span class="o">*</span><span class="n">y</span><span class="p">]</span>
+    <span class="p">])</span>
+
+<span class="n">sol</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">jac</span><span class="o">=</span><span class="n">Jf</span><span class="p">)</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">sol</span><span class="p">.</span><span class="n">x</span>
+</code></pre></div></div>
+
+<h2 id="review-questions">Review Questions</h2>
+
+<ul>
+  <li>See this <a href="/cs357/fa2020/reviews/rev-14-solve_nd.html">review link</a></li>
+</ul>
+
+<h2 id="changelog">ChangeLog</h2>
+
+<ul>
+  <li>2017-12-02 Erin Carrier <a href="mailto:ecarrie2@illinois.edu">ecarrie2@illinois.edu</a>: adds review questions,
+adds a little more cost information, a few other minor fixes</li>
+  <li>2017-12-25 Adam Stewart <a href="mailto:adamjs5@illinois.edu">adamjs5@illinois.edu</a>: first complete draft</li>
+  <li>2017-10-17 Luke Olson <a href="mailto:lukeo@illinois.edu">lukeo@illinois.edu</a>: outline</li>
+</ul>
+
+    </div>
+</section>
+
+</body>
+<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<!-- swiper js -->
+<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
+<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
+<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<!-- custom js -->
+<script src="/cs357/fa2024/assets/js/custom.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>
