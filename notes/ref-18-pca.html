@@ -5,29 +5,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>PCA - CS 357</title>
-    <link rel="icon" href="/cs357/fa2024/assets/img/favicon.png">
-    <link rel="shortcut icon" href="/cs357/fa2024/assets/img/favicon.png" />
+    <link rel="icon" href="/pages/cs357/cs357-website/assets/img/favicon.png">
+    <link rel="shortcut icon" href="/pages/cs357/cs357-website/assets/img/favicon.png" />
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/bootstrap.min.css">
     <!-- animate CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/animate.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/animate.css">
     <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/owl.carousel.min.css">
     <!-- themify CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/themify-icons.css">
     <!-- flaticon CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/flaticon.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/flaticon.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/magnific-popup.css">
     <!-- swiper CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/slick.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/slick.css">
     <!-- style CSS -->
-    <link rel="stylesheet" href="/cs357/fa2024/assets/css/style.css">
+    <link rel="stylesheet" href="/pages/cs357/cs357-website/assets/css/style.css">
     <!-- opengraph -->
     <meta property="og:site_name" content="CS 357 Fall 2024" />
     <meta property="og:title" content="PCA - CS 357" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/cs357/fa2024/assets/img/photos/group-CIF.png" />
+    <meta property="og:image" content="/pages/cs357/cs357-website/assets/img/photos/group-CIF.png" />
     <!-- Mathjax Support -->
     <script type="text/javascript" async
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">
@@ -60,7 +60,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="/">
                         
-                            <img class="mr-2" style="max-height:25pt" src="/cs357/fa2024/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
+                            <img class="mr-2" style="max-height:25pt" src="/pages/cs357/cs357-website/assets/img/logo.png" alt="logo"> CS 357 <span class="badge badge-success">Fall 2024</span>
                         
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -154,11 +154,11 @@
 
 <h3 id="example">Example</h3>
 <p>Consider a large dataset with \(m\) samples and 30 different cell features. There are many variables that are highly correlated with each other. We can create an \(m \times\)30 matrix \(\bf A\), with the columns \(\bf F_i\) representing the different features.</p>
-<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_ex1_1.png" width="250" /> </div>
+<div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_ex1_1.png" width="250" /> </div>
 <p>Now suppose we want to reduce the feature space. One method is to directly remove some feature variables. For example, we could ignore the last 20 feature columns to obtain a reduced data matrix \(\bf A^*\). This approach is simple and maintains the interpretation of the feature variables, but we have lost the dropped column information.</p>
-<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_ex1_2.png" width="250" /> </div>
+<div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_ex1_2.png" width="250" /> </div>
 <p>Another approach is to use PCA. We create “new feature variables” \(\bf F_i^*\) from a specific linear combination of the original variables. Each of the new variables after PCA are all independent of one another. Now, we are able to use less variables, but still contain information of all features. The disadvantage here is that we have lost “meaningful” interpretation of the new feature variables.</p>
-<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_ex1_3.png" width="280" /> </div>
+<div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_ex1_3.png" width="280" /> </div>
 
 <h2 id="data-centering">Data Centering</h2>
 
@@ -168,10 +168,10 @@
 <p>This is an example of data centering for a set of 6 data points \(p_0 = (8.6, 18.0)\), \(p_1 = (3.4, 20.6)\), \(p_2 = (4.6, 19.7)\), \(p_3 = (3.4, 11.4)\), \(p_4 = (5.4, 20.3)\), \(p_5 = (2.2, 12.4)\) on a 2d coordinate space. We first calculate the mean point \(\bar{p} = (4.6, 17.1)\), then shift all of the data points such that our new mean point is centered at \(\bar{p}' = (0, 0)\).</p>
 <div class="row">
   <div class="column">
-    <div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_center_1.png" width="330" /> </div>
+    <div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_center_1.png" width="330" /> </div>
   </div>
   <div class="column">
-    <div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_center_2.png" width="330" hspace="100" /> </div>
+    <div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_center_2.png" width="330" hspace="100" /> </div>
   </div>
 </div>
 
@@ -191,7 +191,7 @@
   <li>\(a_{11} + a_{22} + a_{33}\) = Overall variability (total variance).</li>
   <li>\(\frac{a_{ii}}{a_{11} + a_{22} + a_{33}} \cdot\) 100% = Percentage of the total variance that is explained by \(\bf F_i\). Here \(i = 1, 2, 3\).</li>
 </ul>
-<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_covar_mat.png" width="250" /> </div>
+<div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_covar_mat.png" width="250" /> </div>
 
 <h2 id="diagonalization-and-principal-components">Diagonalization and Principal Components</h2>
 
@@ -203,7 +203,7 @@
 
 <h3 id="example-3">Example</h3>
 <p>For the same covariance matrix in the above example, we can write it in the diagonalization form. Here, \(\frac{1}{m-1} \cdot (d_{11} + d_{22} + d_{33})\) sums up to \(a_{11} + a_{22} + a_{33}\), which represents the overall variability. The first column of \({\bf V}\) is the <em>first principal component</em>, and it represents the direction of the maximum variance \(\frac{1}{m-1} \cdot d_{11}\). Here, the first principal component accounts for \(\frac{d_{11}}{d_{11} + d_{22} + d_{33}} \cdot\) 100% of the variability of the question.</p>
-<div class="figure"> <img src="/cs357/fa2024/assets/img/figs/pca_covar_diag.png" width="1000" /> </div>
+<div class="figure"> <img src="/pages/cs357/cs357-website/assets/img/figs/pca_covar_diag.png" width="1000" /> </div>
 
 <h2 id="svd-and-data-transforming">SVD and Data Transforming</h2>
 
@@ -267,26 +267,26 @@ var = A_new.T@A_new
 </section>
 
 </body>
-<script src="/cs357/fa2024/assets/js/jquery-1.12.1.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/jquery-1.12.1.min.js"></script>
 <!-- popper js -->
-<script src="/cs357/fa2024/assets/js/popper.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/popper.min.js"></script>
 <!-- bootstrap js -->
-<script src="/cs357/fa2024/assets/js/bootstrap.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/bootstrap.min.js"></script>
 <!-- easing js -->
-<script src="/cs357/fa2024/assets/js/jquery.magnific-popup.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/jquery.magnific-popup.js"></script>
 <!-- swiper js -->
-<script src="/cs357/fa2024/assets/js/swiper.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/swiper.min.js"></script>
 <!-- swiper js -->
-<script src="/cs357/fa2024/assets/js/masonry.pkgd.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/masonry.pkgd.js"></script>
 <!-- particles js -->
-<script src="/cs357/fa2024/assets/js/owl.carousel.min.js"></script>
-<script src="/cs357/fa2024/assets/js/jquery.nice-select.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/owl.carousel.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/jquery.nice-select.min.js"></script>
 <!-- swiper js -->
-<script src="/cs357/fa2024/assets/js/slick.min.js"></script>
-<script src="/cs357/fa2024/assets/js/jquery.counterup.min.js"></script>
-<script src="/cs357/fa2024/assets/js/waypoints.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/slick.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/jquery.counterup.min.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/waypoints.min.js"></script>
 <!-- custom js -->
-<script src="/cs357/fa2024/assets/js/custom.js"></script>
+<script src="/pages/cs357/cs357-website/assets/js/custom.js"></script>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
